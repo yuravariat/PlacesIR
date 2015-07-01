@@ -17,7 +17,7 @@ namespace PlacesIR.Summary
                 throw new ArgumentException("placeIDToSummarize");
             }
             PlaceSummary summary;
-            string cacheKey = placeIDToSummarize + lang;
+            string cacheKey = "Summary-" + placeIDToSummarize + "-" + lang;
             if (HttpContext.Current.Cache[cacheKey] != null)
             {
                 summary = HttpContext.Current.Cache[placeIDToSummarize] as PlaceSummary;
