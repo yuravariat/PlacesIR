@@ -1,0 +1,39 @@
+================
+5/21/2015 11:57:54 PM ==> LogHandler init: on directory D:\VSProjects\PlacesIR\PlacesIR\App_Data\Logs\
+================
+================
+5/21/2015 11:57:54 PM ==> LogHandler init: NLog.NLogConfigurationException: Exception occurred when loading configuration from D:\VSProjects\PlacesIR\PlacesIR\NLog.config ---> NLog.NLogConfigurationException: Error when setting property 'Layout' on File Target[logInfo] ---> System.ArgumentException: LayoutRenderer cannot be found: 'fullurl'
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Layouts.LayoutParser.ParseLayoutRenderer(ConfigurationItemFactory configurationItemFactory, SimpleStringReader sr)
+   at NLog.Layouts.LayoutParser.CompileLayout(ConfigurationItemFactory configurationItemFactory, SimpleStringReader sr, Boolean isNested, String& text)
+   at NLog.Layouts.SimpleLayout.set_Text(String value)
+   at NLog.Internal.PropertyHelper.TryNLogSpecificConversion(Type propertyType, String value, Object& newValue, ConfigurationItemFactory configurationItemFactory)
+   at NLog.Internal.PropertyHelper.SetPropertyFromString(Object o, String name, String value, ConfigurationItemFactory configurationItemFactory)
+   --- End of inner exception stack trace ---
+   at NLog.Internal.PropertyHelper.SetPropertyFromString(Object o, String name, String value, ConfigurationItemFactory configurationItemFactory)
+   at NLog.Config.XmlLoggingConfiguration.ConfigureObjectFromAttributes(Object targetObject, NLogXmlElement element, Boolean ignoreType)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetElement(Target target, NLogXmlElement targetElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetsElement(NLogXmlElement targetsElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String baseDirectory)
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+   --- End of inner exception stack trace ---
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+   at NLog.Config.XmlLoggingConfiguration..ctor(String fileName)
+   at NLog.LogFactory.get_Configuration()
+   at NLog.LogFactory.GetLogger(LoggerCacheKey cacheKey)
+   at NLog.LogManager.GetCurrentClassLogger()
+   at PlacesIR.LogHandler..cctor() in d:\VSProjects\PlacesIR\PlacesIR\App_Code\LogHandler.cs:line 34 Inner exception = NLog.NLogConfigurationException: Error when setting property 'Layout' on File Target[logInfo] ---> System.ArgumentException: LayoutRenderer cannot be found: 'fullurl'
+   at NLog.Config.Factory`2.CreateInstance(String name)
+   at NLog.Layouts.LayoutParser.ParseLayoutRenderer(ConfigurationItemFactory configurationItemFactory, SimpleStringReader sr)
+   at NLog.Layouts.LayoutParser.CompileLayout(ConfigurationItemFactory configurationItemFactory, SimpleStringReader sr, Boolean isNested, String& text)
+   at NLog.Layouts.SimpleLayout.set_Text(String value)
+   at NLog.Internal.PropertyHelper.TryNLogSpecificConversion(Type propertyType, String value, Object& newValue, ConfigurationItemFactory configurationItemFactory)
+   at NLog.Internal.PropertyHelper.SetPropertyFromString(Object o, String name, String value, ConfigurationItemFactory configurationItemFactory)
+   --- End of inner exception stack trace ---
+   at NLog.Internal.PropertyHelper.SetPropertyFromString(Object o, String name, String value, ConfigurationItemFactory configurationItemFactory)
+   at NLog.Config.XmlLoggingConfiguration.ConfigureObjectFromAttributes(Object targetObject, NLogXmlElement element, Boolean ignoreType)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetElement(Target target, NLogXmlElement targetElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseTargetsElement(NLogXmlElement targetsElement)
+   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String baseDirectory)
+   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
+================
