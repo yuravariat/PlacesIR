@@ -1,0 +1,138 @@
+﻿body {
+    background: none;
+}
+
+.anim-effect {
+    display: none;
+}
+
+.panel-body {
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.background {
+    background: #FDFDFD;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+.navbar-default {
+    background-color: #6f5499;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#563d7c),to(#6f5499));
+    background-image: -webkit-linear-gradient(top,#563d7c 0,#6f5499 100%);
+    background-image: -o-linear-gradient(top,#563d7c 0,#6f5499 100%);
+    background-image: linear-gradient(to bottom,#563d7c 0,#6f5499 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#563d7c', endColorstr='#6F5499', GradientType=0);
+    background-repeat: repeat-x;
+    color: #fff;
+}
+
+.panel-default {
+    border-color: #bbb;
+}
+
+.panel-default > .panel-heading {
+    background-image: -webkit-linear-gradient(top,#e1e1e1 0,#ccc 100%);
+    background-image: -o-linear-gradient(top,#e1e1e1 0,#ccc 100%);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#e1e1e1),to(#ccc));
+    background-image: linear-gradient(to bottom,#e1e1e1 0,#ccc 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e1e1e1', endColorstr='#ccc', GradientType=0);
+    background-repeat: repeat-x;
+}
+
+.panel-heading .glyphicon {
+    margin-right: 5px;
+}
+
+.panel-footer {
+    background: none;
+}
+
+.form-group .hidden-error {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+    visibility: hidden;
+}
+
+.form-group .hidden-error .list-unstyled {
+    margin: 0;
+}
+
+.form-group.has-error .hidden-error {
+    visibility: visible;
+}
+
+.search-panel .form-inline {
+    margin: 0 0 -10px 0;
+}
+/*#region ---------------------------------- Loading window ----------------------------------*/
+.loading-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    z-index: 10000;
+}
+
+.loading-container .background, .popupbackground {
+    background: rgba(0,0,0,0.3);
+    opacity: 0.5;
+    height: 100%;
+    top: 0;
+    z-index: 20;
+}
+
+.loading-container .loading-window {
+    top: 40%;
+    position: fixed;
+    width: 400px;
+    min-height: 100px;
+    margin-left: 38%;
+    padding: 15px 0 15px 0;
+    border-radius: 5px;
+}
+
+.loading-window #loading-text-div, .loading-window #loading-text-div2, .loading-window .image {
+    text-align: center;
+    margin: 10px 0px 15px 0;
+    font-size: 30px;
+}
+
+.loading-window #loading-text-div {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+#dealsContainer a, #dealsContainer a:visited, #dealsContainer a:active {
+    text-decoration: none;
+    color: #000;
+}
+/*   CHANGES TO POP UP WINDOW */
+.loading-container.popup-window .loading-window {
+    position: absolute;
+    overflow: scroll;
+    width: 460px;
+    margin-left: 80px;
+    margin-right: 80px;
+    z-index: 21;
+    top: 0;
+    height: 100%;
+}
+
+.loading-container.popup-window .loading-window .image {
+    display: none;
+}
+
+.loading-container.popup-window .loading-window #loading-text-div2 {
+    font-size: 24px;
+}
+
+#loading-container.searchloading .loading-window .image {
+    margin: 25px 0 0 0;
+}
+/*#endregion*/

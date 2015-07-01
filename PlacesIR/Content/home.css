@@ -1,0 +1,49 @@
+﻿#google-map {
+    width: 100%;
+    height: 342px;
+}
+.place-popup h4{
+    margin:0;
+}
+@media (min-width: 768px) {
+      #inp-distance{
+        width:100px;
+    }
+}
+#places-panel .panel-body {
+    max-height: 301px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding:7px;
+}
+
+#places-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#places-results ul li {
+    border-top: 1px solid #ddd;
+    line-height: 40px;
+    cursor:pointer;
+}
+#places-results ul li.active {
+    background:#eee;
+}
+#places-results ul li:first-child {
+    border: none;
+}
+
+#places-results li input[type=radio] {
+    height: 17px;
+    width: 17px;
+    display: block;
+    float: left;
+    margin-top: 10px;
+}
+
+#places-results li .logo {
+    max-height: 18px;
+    margin: 0 5px 5px 5px;
+}
