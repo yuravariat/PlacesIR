@@ -47,3 +47,9 @@
     max-height: 18px;
     margin: 0 5px 5px 5px;
 }
+#place-details-tabs .tab-pane{
+    padding-top:15px;
+}
+.place-overview-div{
+    margin-bottom:10px;
+}
