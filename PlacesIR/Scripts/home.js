@@ -112,6 +112,7 @@ Search.FindLocationsAction = function () {
         successfun: function (msg) {
             $(window).trigger('Search.HideLoading');
             var container = $('#places-results');
+
             if (msg.IsValid) {
                 $('#places-panel').slideDown();
                 Search.CurrentLocations = msg.NearByPlaces;
@@ -120,6 +121,8 @@ Search.FindLocationsAction = function () {
                     $('#places-panel .panel-footer').show();
                     Search.DrawGoogleMap(msg.CenterPlace, Search.CurrentLocations, data.distance);
                     container.empty();
+
+                    // Add places to list container
                     var ul = $('<ul>');
                     for (var i in Search.CurrentLocations) {
                         var li = $('<li>' + Search.PlaceItemTemplate + '</li>');
@@ -127,15 +130,7 @@ Search.FindLocationsAction = function () {
                         $('.logo', li).attr('src', Search.CurrentLocations[i].icon);
                         li.attr("rel", Search.CurrentLocations[i].place_id);
                         li.click(function (e, frommap) {
-                            if (!$(this).hasClass('active')) {
-                                $(this).siblings().removeClass('active');
-                                $(this).addClass('active');
-                                if (frommap) {
-                                    var offsetTop = $('#places-panel .panel-body').scrollTop() + $('#places-results>ul>li.active').offset().top - $('#places-panel .panel-body').offset().top;
-                                    $('#places-panel .panel-body').scrollTop(offsetTop - ($('#places-panel .panel-body').height() / 2) - 30);
-                                }
-                                google.maps.event.trigger(Search.GoogleMapMarkers[$(this).attr("rel")], 'click');
-                            }
+                            Search.PlaceSelected(this, frommap);
                         });
                         ul.append(li);
                     }
@@ -166,6 +161,18 @@ Search.FindLocationsAction = function () {
             return false;
         }
     });
+}
+Search.PlaceSelected = function (liElement, frommap) {
+    if (!$(liElement).hasClass('active')) {
+        $(liElement).siblings().removeClass('active');
+        $(liElement).addClass('active');
+        $('#search-place-info').removeClass('disabled');
+        if (frommap) {
+            var offsetTop = $('#places-panel .panel-body').scrollTop() + $('#places-results>ul>li.active').offset().top - $('#places-panel .panel-body').offset().top;
+            $('#places-panel .panel-body').scrollTop(offsetTop - ($('#places-panel .panel-body').height() / 2) - 30);
+        }
+        google.maps.event.trigger(Search.GoogleMapMarkers[$(liElement).attr("rel")], 'click');
+    }
 }
 Search.DrawGoogleMap = function (centerPlace,nearByPlaces,distance) {
 	if(typeof centerPlace!='undefined'){

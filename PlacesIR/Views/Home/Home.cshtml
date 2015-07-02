@@ -86,11 +86,10 @@
                 </div>
                 <div class="panel-footer anim-effect">
                     <div class="form-inline form-group">
-                        <button class="btn btn-large btn-primary" id="search-places-btn" type="submit">
+                        <button class="btn btn-large btn-primary disabled" id="search-place-info" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                             Show more information
                         </button>
-                        <label for="inp-keywords">Language</label>
                         <select class="form-control" id="inp-rank-by">
                             <option value="en">English</option>
                             <option value="iw">עברית</option>
@@ -116,16 +115,49 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div id="place-details-panel" class="panel anim-effect">
+            <div id="place-details-panel" class="panel panel-default">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <b>Place details</b>
                 </div>
                 <div class="panel-body">
-                    <h2>Places name</h2>
-                </div>
-                <div class="panel-footer anim-effect">
-                    
+                    <h4>Place name</h4>
+                    <div class="place-overview-div">
+                        <label>Overview:&nbsp;</label><span id="place-overview">Place oveview</span>
+                    </div>
+                    <ul id="tabs" class="nav nav-pills data-tabs="tabs">
+                        <li class="active"><a href="#tab-general-info" data-toggle="tab">General information</a></li>
+                        <li><a href="#tab-images" data-toggle="tab">Images</a></li>
+                        <li><a href="#tab-videos" data-toggle="tab">Videos</a></li>
+                        <li><a href="#tab-reviews" data-toggle="tab">Reviews</a></li>
+                    </ul>
+                    <div id="place-details-tabs" class="tab-content">
+                        <div class="tab-pane active" id="tab-general-info">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td style="width:70px;"><label>Adress:</label></td>
+                                    <td id="place-address">Adress</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Phone:</label></td>
+                                    <td id="place-address">Phone</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Url/Website:</label></td>
+                                    <td id="place-address">Url/Website</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="tab-images">
+                            <h5>Images</h5>
+                        </div>
+                        <div class="tab-pane" id="tab-videos">
+                            <h5>Videos</h5>
+                        </div>
+                        <div class="tab-pane" id="tab-reviews">
+                            <h5>Reviews</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
