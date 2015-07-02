@@ -36,4 +36,17 @@ namespace PlacesIR.Controllers.Api
             set { rankby = value; }
         }
     }
+
+    [Serializable]
+    public class RequestPlaceDetails
+    {
+        RequestPlaceDetails() { }
+        private string placeID;
+
+        public string PlaceID
+        {
+            get { return placeID; }
+            set { placeID = value; }
+        }
+    }
 }

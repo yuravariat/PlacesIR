@@ -10,8 +10,10 @@ namespace PlacesIR.Summary
 {
     public class PlaceSummaryCrawler
     {
-        public static PlaceSummary PrepareSummary(string placeIDToSummarize, string lang = "lang_en")
+        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize, string lang = "lang_en")
         {
+            ValidationResponse<PlaceSummary> response = new ValidationResponse<PlaceSummary>();
+
             if (string.IsNullOrEmpty(placeIDToSummarize))
             {
                 throw new ArgumentException("placeIDToSummarize");
@@ -20,10 +22,11 @@ namespace PlacesIR.Summary
             string cacheKey = "Summary-" + placeIDToSummarize + "-" + lang;
             if (HttpContext.Current.Cache[cacheKey] != null)
             {
-                summary = HttpContext.Current.Cache[placeIDToSummarize] as PlaceSummary;
+                summary = HttpContext.Current.Cache[cacheKey] as PlaceSummary;
                 if (summary != null)
                 {
-                    return summary;
+                    response.Obj = summary;
+                    return response;
                 }
             }
             summary = new PlaceSummary(placeIDToSummarize);
@@ -34,6 +37,16 @@ namespace PlacesIR.Summary
                 var placeRes = placesClient.GetPlacesDetails(new ReqPlaceDetails() {
                     placeid = summary.PlaceIDToSummarize
                 });
+                if (placeRes.Obj != null)
+                {
+                    summary.Place = placeRes.Obj;
+                }
+                else
+                {
+                    foreach(var error in placeRes.Errors){
+                        response.Errors.Add(error.Key, error.Value);
+                    }
+                }
             }
 
             // step 1 - search in google.
@@ -53,7 +66,8 @@ namespace PlacesIR.Summary
 
             HttpRuntime.Cache.Insert(cacheKey, summary, null, DateTime.Now.AddHours(4), TimeSpan.Zero);
 
-            return summary;
+            response.Obj = summary;
+            return response;
         }
     }
 }

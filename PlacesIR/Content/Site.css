@@ -152,4 +152,7 @@ a,a:hover, a:focus {
 #loading-container.searchloading .loading-window .image {
     margin: 25px 0 0 0;
 }
+.nav>li>a {
+  padding: 5px 10px;
+}
 /*#endregion*/

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
 using ServiceStack.Text;
+using PlacesIR.Summary;
 
 namespace PlacesIR.Controllers.Api
 {
@@ -17,7 +18,7 @@ namespace PlacesIR.Controllers.Api
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "works" };
+            return new string[] { "now works" };
         }
         [Route("nearby")]
         [HttpPost]
@@ -27,10 +28,12 @@ namespace PlacesIR.Controllers.Api
             if (string.IsNullOrEmpty(req.Place))
             {
                 nearPlacesResp.Errors.Add("place name", "place name can not be empty");
+                return Json(nearPlacesResp);
             }
             if (req.Distance < 100 || req.Distance > 5000)
             {
                 nearPlacesResp.Errors.Add("distance limit", "distanse can be only between 100 and 5000");
+                return Json(nearPlacesResp);
             }
 
             try
@@ -65,8 +68,31 @@ namespace PlacesIR.Controllers.Api
             catch (Exception ex)
             {
                 LogHandler.WriteLog("Place controller NearByPlaces error", "", ex, Level.Error);
+                nearPlacesResp.Errors.Add("Unexpected error", "Unexpected error " + ex.Message);
             }
             return Json(nearPlacesResp);
+        }
+
+        [Route("details")]
+        [HttpPost]
+        public object DetailsPlaces(RequestPlaceDetails req)
+        {
+            ValidationResponse<PlaceSummary> response = new ValidationResponse<PlaceSummary>();
+            if (string.IsNullOrEmpty(req.PlaceID))
+            {
+                response.Errors.Add("placeID", "placeID can not be empty");
+                return Json(response);
+            }
+            try
+            {
+                response = PlaceSummaryCrawler.PrepareSummary(req.PlaceID); // "ChIJN1t_tDeuEmsRUsoyG83frY4"
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteLog("Place controller PlacesDetails error", "", ex, Level.Error);
+                response.Errors.Add("Unexpected error", "Unexpected error " + ex.Message);
+            }
+            return Json(response);
         }
     }
 }

@@ -14,9 +14,6 @@ namespace PlacesIR
         // GET: Home
         public ActionResult Index()
         {
-            //PlaceSummaryCrawler crw = new PlaceSummaryCrawler("ChIJN1t_tDeuEmsRUsoyG83frY4");
-            //crw.PrepareSummary();
-
             ViewBag.Title = "Places IR";
             return View("Home");
         }

@@ -91,76 +91,83 @@ $(window).unload(function () {
     HideLoading();
 });
 //#endregion
-
+Search.FindLocationsActionLock = false;
 Search.FindLocationsAction = function () {
 
-    var isValid = Search.SearchFromValidationRules.ValidateAll();
-    if (!isValid) {
-        return false;
-    }
+    if (!Search.FindLocationsActionLock) {
 
-    var data = {};
-    data.place = $('#inp-place-name').val();
-    data.keywords = $('#inp-keywords').val();
-    data.distance = Number($('#inp-distance').val()) * 1000;
-    data.rankby = $('#inp-rank-by').val();
+        Search.FindLocationsActionLock = true;
+        var isValid = Search.SearchFromValidationRules.ValidateAll();
+        if (!isValid) {
+            Search.FindLocationsActionLock = false;
+            return false;
+        }
 
-    $(window).trigger('Search.ShowLoading');
-    GlobalFunctions.JqueryAjax({
-        url: 'local-api/places/nearby',
-        data: JSON.stringify(data),
-        successfun: function (msg) {
-            $(window).trigger('Search.HideLoading');
-            var container = $('#places-results');
+        var data = {};
+        data.place = $('#inp-place-name').val();
+        data.keywords = $('#inp-keywords').val();
+        data.distance = Number($('#inp-distance').val()) * 1000;
+        data.rankby = $('#inp-rank-by').val();
 
-            if (msg.IsValid) {
-                $('#places-panel').slideDown();
-                Search.CurrentLocations = msg.NearByPlaces;
-                if (Search.CurrentLocations.length > 0) {
-                    $('#map-panel').slideDown();
-                    $('#places-panel .panel-footer').show();
-                    Search.DrawGoogleMap(msg.CenterPlace, Search.CurrentLocations, data.distance);
-                    container.empty();
+        $(window).trigger('Search.ShowLoading');
+        GlobalFunctions.JqueryAjax({
+            url: 'local-api/places/nearby',
+            data: JSON.stringify(data),
+            successfun: function (msg) {
+                $(window).trigger('Search.HideLoading');
+                var container = $('#places-results');
 
-                    // Add places to list container
-                    var ul = $('<ul>');
-                    for (var i in Search.CurrentLocations) {
-                        var li = $('<li>' + Search.PlaceItemTemplate + '</li>');
-                        $('.name', li).html(Search.CurrentLocations[i].name);
-                        $('.logo', li).attr('src', Search.CurrentLocations[i].icon);
-                        li.attr("rel", Search.CurrentLocations[i].place_id);
-                        li.click(function (e, frommap) {
-                            Search.PlaceSelected(this, frommap);
-                        });
-                        ul.append(li);
+                if (msg.IsValid) {
+                    $('#places-panel').slideDown();
+                    Search.CurrentLocations = msg.NearByPlaces;
+                    if (Search.CurrentLocations.length > 0) {
+                        $('#map-panel').slideDown();
+                        $('#places-panel .panel-footer').show();
+                        Search.DrawGoogleMap(msg.CenterPlace, Search.CurrentLocations, data.distance);
+                        container.empty();
+
+                        // Add places to list container
+                        var ul = $('<ul>');
+                        for (var i in Search.CurrentLocations) {
+                            var li = $('<li>' + Search.PlaceItemTemplate + '</li>');
+                            $('.name', li).html(Search.CurrentLocations[i].name);
+                            $('.logo', li).attr('src', Search.CurrentLocations[i].icon);
+                            li.attr("rel", Search.CurrentLocations[i].place_id);
+                            li.click(function (e, frommap) {
+                                Search.PlaceSelected(this, frommap);
+                            });
+                            ul.append(li);
+                        }
+                        container.append(ul);
                     }
-                    container.append(ul);
+                    else {
+                        container.html('No places found.');
+                        $('#places-panel').slideDown();
+                        $('#map-panel').slideUp();
+                    }
                 }
                 else {
                     container.html('No places found.');
-                    $('#places-panel').slideDown();
-                    $('#map-panel').slideUp();
+                    var message = '';
+                    for (var key in msg.Errors) {
+                        message += msg.Errors[key] + ', ';
+                    }
+                    alert(message);
                 }
+                Search.FindLocationsActionLock = false;
+                return false;
+            },
+            errorfunc: function (msg) {
+                $(window).trigger('Search.HideLoading');
+                alert('error');
+                $('#places-results').html('No places found.');
+                $('#places-panel').slideDown();
+                $('#map-panel').slideUp();
+                Search.FindLocationsActionLock = false;
+                return false;
             }
-            else {
-                container.html('No places found.');
-                var message = '';
-                for (var key in msg.Errors) {
-                    message += msg.Errors[key] + ', ';
-                }
-                alert(message);
-            }
-            return false;
-        },
-        errorfunc: function (msg) {
-            $(window).trigger('Search.HideLoading');
-            alert('error');
-            $('#places-results').html('No places found.');
-            $('#places-panel').slideDown();
-            $('#map-panel').slideUp();
-            return false;
-        }
-    });
+        });
+    }
 }
 Search.PlaceSelected = function (liElement, frommap) {
     if (!$(liElement).hasClass('active')) {
@@ -249,6 +256,47 @@ Search.ComputeZoomLevel = function(distance){
 	}
 	return zoom;
 }
+Search.GetPlaceDetailsLock = false;
+Search.GetPlaceDetails = function (placeID) {
+
+    if (!Search.GetPlaceDetailsLock) {
+
+        Search.GetPlaceDetailsLock = true;
+
+        var data = {};
+        data.placeID = placeID;
+
+        $(window).trigger('Search.ShowLoading');
+        GlobalFunctions.JqueryAjax({
+            url: 'local-api/places/details',
+            data: JSON.stringify(data),
+            successfun: function (msg) {
+                if (msg.IsValid) {
+                    
+                }
+                else {
+                    var message = '';
+                    for (var key in msg.Errors) {
+                        message += msg.Errors[key] + ', ';
+                    }
+                    alert(message);
+                }
+                $(window).trigger('Search.HideLoading');
+                Search.GetPlaceDetailsLock = false;
+                return false;
+            },
+            errorfunc: function (msg) {
+                $(window).trigger('Search.HideLoading');
+                alert('error');
+                Search.GetPlaceDetailsLock = false;
+                return false;
+            }
+        });
+
+        Search.GetPlaceDetailsLock = false;
+    }
+}
+
 $(document).ready(function (e) {
     $('#search-places-btn').click(function (e) {
         e.preventDefault();
