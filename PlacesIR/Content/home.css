@@ -50,6 +50,9 @@
 #place-details-tabs .tab-pane{
     padding-top:15px;
 }
+#place-details-panel .nav-pills>li.active>a,#place-details-panel .nav-pills>li.active>a:hover,#place-details-panel .nav-pills>li.active>a:focus{
+    background:#896cb7;
+}
 .place-overview-div{
     margin-bottom:10px;
 }
