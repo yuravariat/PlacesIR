@@ -121,11 +121,15 @@
                     <b>Place details</b>
                 </div>
                 <div class="panel-body">
-                    <h4>Place name</h4>
-                    <div class="place-overview-div">
-                        <label>Overview:&nbsp;</label><span id="place-overview">Place oveview</span>
+                    <h4 id="place-details-name">Place name</h4>
+                    <div id="place-details-rating-stars" class="rating-stars">
+                        <div class="images"></div>
+                        &nbsp;
                     </div>
-                    <ul id="tabs" class="nav nav-pills data-tabs="tabs">
+                    <div class="place-overview-div">
+                        <label>Overview:&nbsp;</label><span id="place-details-overview">Place oveview</span>
+                    </div>
+                    <ul id="tabs" class="nav nav-pills data-tabs=" tabs">
                         <li class="active"><a href="#tab-general-info" data-toggle="tab">General information</a></li>
                         <li><a href="#tab-images" data-toggle="tab">Images</a></li>
                         <li><a href="#tab-videos" data-toggle="tab">Videos</a></li>
@@ -135,16 +139,28 @@
                         <div class="tab-pane active" id="tab-general-info">
                             <table class="table table-striped">
                                 <tr>
+                                    <td><label>Rating:</label></td>
+                                    <td id="place-details-rating">Rating</td>
+                                </tr>
+                                <tr>
                                     <td style="width:70px;"><label>Adress:</label></td>
-                                    <td id="place-address">Adress</td>
+                                    <td id="place-details-address">Adress</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:70px;"><label>Vicinity:</label></td>
+                                    <td id="place-details-vicinity">Vicinity</td>
                                 </tr>
                                 <tr>
                                     <td><label>Phone:</label></td>
-                                    <td id="place-address">Phone</td>
+                                    <td id="place-details-phone">Phone</td>
                                 </tr>
                                 <tr>
                                     <td><label>Url/Website:</label></td>
-                                    <td id="place-address">Url/Website</td>
+                                    <td id="place-details-url">Url/Website</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Geometry:</label></td>
+                                    <td id="place-details-geometry">Geometry</td>
                                 </tr>
                             </table>
                         </div>
@@ -156,6 +172,8 @@
                         </div>
                         <div class="tab-pane" id="tab-reviews">
                             <h5>Reviews</h5>
+                            <div id="place-details-reviews">
+                            </div>
                         </div>
                     </div>
                 </div>

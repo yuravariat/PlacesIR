@@ -52,6 +52,38 @@
     margin-top:5px;
     padding-top:5px;
 }
+#place-details-name{
+    float:left;
+    font-size:18px;
+    margin-right:15px;
+}
+.rating-stars{
+    height:30px;
+    width:140px;
+    background:#6F5499;
+    position:relative;
+    float:left;
+}
+.rating-stars .images{
+    background:url(images/star.png);
+    height:30px;
+    width:140px;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.review-item .rating-stars{
+    height:21px;
+    width:100px;
+}
+.review-item .rating-stars .images{
+    background-size:20px;
+    width:100px;
+    height:21px;
+}
+h5{
+    font-weight:bold;
+}
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
   border-top: 0px none;
 }
@@ -60,4 +92,6 @@
 }
 .place-overview-div{
     margin-bottom:10px;
+    float:left;
+    width:100%;
 }
