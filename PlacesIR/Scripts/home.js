@@ -5,6 +5,7 @@ Search.CurrentPlaceSummary = null;
 Search.SearchFromValidationRules = null;
 Search.PlaceItemTemplate = null;
 Search.GoogleMapMarkers = {};
+Search.ApiKey = null;
 
 GlobalFunctions.JqueryAjax = function(options) {
     var settings = $.extend({
@@ -92,6 +93,7 @@ $(window).unload(function () {
     HideLoading();
 });
 //#endregion
+
 Search.FindLocationsActionLock = false;
 Search.FindLocationsAction = function () {
 
@@ -109,6 +111,8 @@ Search.FindLocationsAction = function () {
         data.keywords = $('#inp-keywords').val();
         data.distance = Number($('#inp-distance').val()) * 1000;
         data.rankby = $('#inp-rank-by').val();
+
+        $('#place-details-panel').hide();
 
         $(window).trigger('Search.ShowLoading');
         GlobalFunctions.JqueryAjax({
@@ -304,6 +308,8 @@ Search.TestGetPlaceDetails = function () {
 Search.PlaceSummaryDetails = function () {
     if (Search.CurrentPlaceSummary != null && typeof Search.CurrentPlaceSummary.Place != 'undefined') {
 
+        $('#place-details-panel').show();
+
         // General info
         $('#place-details-name').html(Search.CurrentPlaceSummary.Place.name);
         if (typeof Search.CurrentPlaceSummary.Place.rating != 'undefined' && !isNaN(Search.CurrentPlaceSummary.Place.rating)) {
@@ -322,6 +328,21 @@ Search.PlaceSummaryDetails = function () {
         $('#place-details-url').html(Search.CurrentPlaceSummary.Place.website);
         $('#place-details-geometry').html(Search.CurrentPlaceSummary.Place.geometry.location.lng + ', ' + Search.CurrentPlaceSummary.Place.geometry.location.lat);
 
+        // Images
+        $('#place-details-images').empty();
+        if (typeof Search.CurrentPlaceSummary.Place.photos != 'undefined') {
+            for (var i in Search.CurrentPlaceSummary.Place.photos) {
+                if (!isNaN(i)) {
+                    var image = $('<div/>', { 'class': 'image-item' });
+                    var url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + Search.CurrentPlaceSummary.Place.photos[i].photo_reference +
+                            '&sensor=false&maxheight=200&maxwidth=200&key=' + Search.ApiKey;
+                    image.append('<img src="' + url + '" alt="" title="" />');
+
+                    $('#place-details-images').append(image);
+                }
+            }
+        }
+
         // Reviews
         $('#place-details-reviews').empty();
         if (typeof Search.CurrentPlaceSummary.Place.reviews != 'undefined') {
@@ -329,7 +350,7 @@ Search.PlaceSummaryDetails = function () {
                 if (!isNaN(i)) {
                     var review = $('<div/>', { 'class': 'review-item' });
                     review.append('<div class="author">' + Search.CurrentPlaceSummary.Place.reviews[i].author_name + '</div>');
-                    review.append('<div class="date">' + (new Date(Search.CurrentPlaceSummary.Place.reviews[i].time * 1000)).Format('dd/MM/yyyy') + '</div>');
+                    review.append('<div class="date"> - ' + (new Date(Search.CurrentPlaceSummary.Place.reviews[i].time * 1000)).Format('dd/MM/yyyy') + '</div>');
                     review.append('<div class="rating-stars"><div class="images"></div></div>');
                     review.append('<div class="content">' + Search.CurrentPlaceSummary.Place.reviews[i].text + '</div>');
 
@@ -339,12 +360,24 @@ Search.PlaceSummaryDetails = function () {
         }
     }
 }
+
 $(document).ready(function (e) {
     $('#search-places-btn').click(function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
         Search.FindLocationsAction();
     });
+    $('#search-place-info').click(function (e) {
+        var selectedPlace = $('#places-results>ul>li.active');
+        if (selectedPlace.length > 0) {
+            var place_id = selectedPlace.attr('rel');
+            Search.GetPlaceDetails(place_id);
+        }
+        else {
+            alert('please select place');
+        }
+    });
     Search.SearchFromValidationRules = $("#search-from-rules").ValidationGroup();
     Search.PlaceItemTemplate = $('#place-template').html();
+    Search.ApiKey = $('#api-key').val();
 });

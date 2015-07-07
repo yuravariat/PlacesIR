@@ -115,7 +115,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div id="place-details-panel" class="panel panel-default">
+            <div id="place-details-panel" class="panel panel-default anim-effect">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <b>Place details</b>
@@ -165,13 +165,14 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="tab-images">
-                            <h5>Images</h5>
+                            <div id="place-details-images">
+                            </div>
                         </div>
                         <div class="tab-pane" id="tab-videos">
-                            <h5>Videos</h5>
+                            <div id="place-details-videos">
+                            </div>
                         </div>
                         <div class="tab-pane" id="tab-reviews">
-                            <h5>Reviews</h5>
                             <div id="place-details-reviews">
                             </div>
                         </div>
@@ -187,4 +188,4 @@
         <span class="name"></span>
     </div>
 </script>
-
+<input type="hidden" id="api-key" value="@ConfigurationManager.AppSettings["GoogleAPIKey"]" />

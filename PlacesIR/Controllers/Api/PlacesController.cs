@@ -85,7 +85,7 @@ namespace PlacesIR.Controllers.Api
             }
             try
             {
-                response = PlaceSummaryCrawler.PrepareSummary(req.PlaceID); // "ChIJN1t_tDeuEmsRUsoyG83frY4"
+                response = PlaceSummaryCrawler.PrepareSummary(req.PlaceID);
             }
             catch (Exception ex)
             {

@@ -51,6 +51,7 @@
     border-top:1px solid #aaa;
     margin-top:5px;
     padding-top:5px;
+    min-height:300px;
 }
 #place-details-name{
     float:left;
@@ -75,6 +76,9 @@
 .review-item .rating-stars{
     height:21px;
     width:100px;
+    float:left;
+    clear:both;
+    margin-bottom:10px;
 }
 .review-item .rating-stars .images{
     background-size:20px;
@@ -94,4 +98,25 @@ h5{
     margin-bottom:10px;
     float:left;
     width:100%;
+}
+.review-item{
+    margin-top:5px;
+    padding:10px 5px;
+    float:left;
+    width:100%;
+}
+.review-item:nth-of-type(odd){
+  background-color: #f9f9f9;
+}
+.review-item .author{
+    float:left;
+    margin-right:10px;
+}
+.review-item .date{
+    float:left;
+}
+.review-item .content{
+    float:left;
+    clear:both;
+    max-width:900px;
 }
