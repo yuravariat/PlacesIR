@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Logs\log.txt" />
-    <Content Include="App_Data\TextToSummaryTest.txt" />
     <Content Include="Content\bootstrap-theme.min.css">
       <DependentUpon>bootstrap-theme.css</DependentUpon>
     </Content>
