@@ -13,12 +13,8 @@ namespace PlacesIR.GoogleSearch
     {
         #region Properties and fields
         private string GoogleApiKey;
+        private string GoogleCustomeSearchEngineID;
         private ValidationResponse<object> validationResponse;
-        public const int MAXIMUM_PAGE_RESULTS = 20;
-        public const int DEFAULT_RESULTS = MAXIMUM_PAGE_RESULTS;
-        public const int MAXIMUM_RESULTS = 60;
-        public const double MAXIMUM_RADIUS = 50000;
-        public const int DELAY_BETWEEN_REQUESTS = 2000;
 
         protected JsonServiceClient sApi;
         protected string apiUrl;
@@ -30,7 +26,7 @@ namespace PlacesIR.GoogleSearch
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.AssumeUtc = false;
             JsConfig.AppendUtcOffset = false;
-
+            JsConfig.ExcludeTypeInfo = true;
             //JsConfig.JsonParseDatesOnlyToJson = true;
         }
         public string ApiUrl
@@ -68,6 +64,7 @@ namespace PlacesIR.GoogleSearch
             apiUrl = apiUrl ?? ConfigurationManager.AppSettings["GoogleSearchAPIUrl"];
             sApi.BaseUri = apiUrl;
             GoogleApiKey = ConfigurationManager.AppSettings["GoogleAPIKey"];
+            GoogleCustomeSearchEngineID = ConfigurationManager.AppSettings["GoogleCustomeSearchEngineID"];
             sApi.Timeout = TimeSpan.FromSeconds(serviceTimeOutSeconds);
         }
         private ValidationResponse<T> ServiceCall<T>(ServiceStack.ServiceHost.IReturn<T> request, RequestMethods method = RequestMethods.GET)
@@ -155,6 +152,7 @@ namespace PlacesIR.GoogleSearch
 
             #region Retrive data
             request.key = GoogleApiKey;
+            request.cx = GoogleCustomeSearchEngineID;
             var res = ServiceCall(request, RequestMethods.GET);
             return res;
 

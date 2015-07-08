@@ -7,29 +7,26 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 
-namespace PlacesIR.GooglePlaces
+namespace PlacesIR.Aylien
 {
-    public class GooglePlacesClient : IDisposable
+    public class AylienClient : IDisposable
     {
         #region Properties and fields
-        private string GoogleApiKey;
+        private string XAYLIENTextAPIApplicationKey;
+        private string XAYLIENTextAPIApplicationID;
         private ValidationResponse<object> validationResponse;
-        public const int MAXIMUM_PAGE_RESULTS = 20;
-        public const int DEFAULT_RESULTS = MAXIMUM_PAGE_RESULTS;
-        public const int MAXIMUM_RESULTS = 60;
-        public const double MAXIMUM_RADIUS = 50000;
-        public const int DELAY_BETWEEN_REQUESTS = 2000;
 
         protected JsonServiceClient sApi;
         protected string apiUrl;
         #endregion
 
         #region Init
-        static GooglePlacesClient()
+        static AylienClient()
         {
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.AssumeUtc = false;
             JsConfig.AppendUtcOffset = false;
+            JsConfig.ExcludeTypeInfo = true;
 
             //JsConfig.JsonParseDatesOnlyToJson = true;
         }
@@ -40,7 +37,7 @@ namespace PlacesIR.GooglePlaces
             {
                 if (string.IsNullOrEmpty(apiUrl) && Uri.IsWellFormedUriString(apiUrl, UriKind.Absolute))
                 {
-                    validationResponse.Errors.AddError("SilverWS.Url", "SilverWS.Url (" + (apiUrl == null ? "null" : apiUrl) + ") Cannot be null or invalid");
+                    validationResponse.Errors.AddError("GooglePlacesClient", "GooglePlacesClient (" + (apiUrl == null ? "null" : apiUrl) + ") Cannot be null or invalid");
                 }
                 else
                 {
@@ -57,7 +54,7 @@ namespace PlacesIR.GooglePlaces
                 sApi.Proxy = value;
             }
         }
-        public GooglePlacesClient(int serviceTimeOutSeconds = 25, string apiUrl = null, string user = null, string pass = null)
+        public AylienClient(int serviceTimeOutSeconds = 25, string apiUrl = null, string user = null, string pass = null)
         {
             if (serviceTimeOutSeconds <= 0)
             {
@@ -65,9 +62,12 @@ namespace PlacesIR.GooglePlaces
             }
             validationResponse = new ValidationResponse<object>();
             sApi = new JsonServiceClient();
-            apiUrl = apiUrl ?? ConfigurationManager.AppSettings["GooglePlacesAPIUrl"];
+            apiUrl = apiUrl ?? ConfigurationManager.AppSettings["AylienAPIUrl"];
             sApi.BaseUri = apiUrl;
-            GoogleApiKey = ConfigurationManager.AppSettings["GoogleAPIKey"];
+            XAYLIENTextAPIApplicationKey = ConfigurationManager.AppSettings["XAYLIENTextAPIApplicationKey"];
+            XAYLIENTextAPIApplicationID = ConfigurationManager.AppSettings["XAYLIENTextAPIApplicationID"];
+            sApi.Headers.Add("X-AYLIEN-TextAPI-Application-Key", XAYLIENTextAPIApplicationKey);
+            sApi.Headers.Add("X-AYLIEN-TextAPI-Application-ID", XAYLIENTextAPIApplicationID);
             sApi.Timeout = TimeSpan.FromSeconds(serviceTimeOutSeconds);
         }
         private ValidationResponse<T> ServiceCall<T>(ServiceStack.ServiceHost.IReturn<T> request, RequestMethods method = RequestMethods.GET)
@@ -115,39 +115,6 @@ namespace PlacesIR.GooglePlaces
             response.Obj = res;
             return response;
         }
-        private ValidationResponse<List<Place>> EvaluateResponse(ref ValidationResponse<List<Place>> response, ValidationResponse<GoogleApiResponse<List<Place>>> res)
-        {
-            if (response==null)
-            {
-                response = new ValidationResponse<List<Place>>();
-            }
-            if (res.Obj != null && res.Obj.status == "OK")
-            {
-                if (!response.Obj.IsNullOrEmpty())
-                {
-                    response.Obj.AddRange(res.Obj.results);
-                }
-                else
-                {
-                    response.Obj = res.Obj.results;
-                }
-            }
-            else
-            {
-                if (res.Errors != null)
-                {
-                    foreach (var key in res.Errors.Keys)
-                    {
-                        if (!validationResponse.Errors.ContainsKey(key))
-                        {
-                            response.Errors.Add(key, res.Errors[key]);
-                        }
-                    }
-                }
-                response.Errors.Add("Request error", res.Obj != null ? res.Obj.status + " " + res.Obj.error_message : "");
-            }
-            return response;
-        }
         public ValidationResponse<T> CreateValidationResponse<T>()
         {
             ValidationResponse<T> ValidationResponse = new ValidationResponse<T>();
@@ -169,9 +136,9 @@ namespace PlacesIR.GooglePlaces
 
         #region Functions
 
-        public ValidationResponse<List<Place>> GetPlacesByQuery(ReqQueryPlaces request)
+        public ValidationResponse<ExtractResponse> ExtractArticle(ReqExtract request)
         {
-            ValidationResponse<List<Place>> validationResponse = CreateValidationResponse<List<Place>>();
+            ValidationResponse<ExtractResponse> validationResponse = CreateValidationResponse<ExtractResponse>();
             #region Validation
 
             if (!validationResponse.IsValid)
@@ -187,19 +154,12 @@ namespace PlacesIR.GooglePlaces
             #endregion
 
             #region Retrive data
-            request.key = GoogleApiKey;
-            var res = ServiceCall(request, RequestMethods.GET);
-            validationResponse = EvaluateResponse(ref validationResponse, res);
-            return validationResponse;
-
+            return ServiceCall(request, RequestMethods.GET);
             #endregion
         }
-        public ValidationResponse<List<Place>> GetNearByPlaces(ReqNearByPlaces request, int limit = 40)
+        public ValidationResponse<SummaryResponse> Summarise(ReqSummarise request)
         {
-            limit = Math.Min(limit, MAXIMUM_RESULTS); // max of 60 results possible
-            int pages = (int)Math.Ceiling(limit / (double)MAXIMUM_PAGE_RESULTS);
-
-            ValidationResponse<List<Place>> validationResponse = CreateValidationResponse<List<Place>>();
+            ValidationResponse<SummaryResponse> validationResponse = CreateValidationResponse<SummaryResponse>();
             #region Validation
 
             if (!validationResponse.IsValid)
@@ -215,38 +175,52 @@ namespace PlacesIR.GooglePlaces
             #endregion
 
             #region Retrive data
-            request.key = GoogleApiKey;
-            ValidationResponse<GoogleApiResponse<List<Place>>> res = null;
-            for (int i = 0; i < pages; i++)
-            {
-                res = ServiceCall(request, RequestMethods.GET);
-                validationResponse = EvaluateResponse(ref validationResponse, res);
-                if ((i + 1) < pages && res.Obj != null && !string.IsNullOrEmpty(res.Obj.next_page_token))
-                {
-                    request.pagetoken = res.Obj.next_page_token;
-                    Thread.Sleep(DELAY_BETWEEN_REQUESTS);  // Page tokens have a delay before they are available.
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return validationResponse;
+            return ServiceCall(request, RequestMethods.GET);
+            #endregion
+        }
+        public ValidationResponse<LangDetectionResponse> DetectLanguage(ReqLangDetect request)
+        {
+            ValidationResponse<LangDetectionResponse> validationResponse = CreateValidationResponse<LangDetectionResponse>();
+            #region Validation
 
+            if (!validationResponse.IsValid)
+            {
+                return validationResponse;
+            }
+            if (request == null)
+            {
+                validationResponse.Errors.AddError("Request object null", "Request object cannot be null", level: Level.Error);
+                return validationResponse;
+            }
+
+            #endregion
+
+            #region Retrive data
+            return ServiceCall(request, RequestMethods.GET);
+            #endregion
+        }
+        public ValidationResponse<List<HCard>> GetMicroData(ReqMicroformats request)
+        {
+            ValidationResponse<List<HCard>> validationResponse = CreateValidationResponse<List<HCard>>();
+            #region Validation
+
+            if (!validationResponse.IsValid)
+            {
+                return validationResponse;
+            }
+            if (request == null)
+            {
+                validationResponse.Errors.AddError("Request object null", "Request object cannot be null", level: Level.Error);
+                return validationResponse;
+            }
+
+            #endregion
+
+            #region Retrive data
+            return ServiceCall(request, RequestMethods.GET);
             #endregion
         }
 
         #endregion
-    }
-    public enum RequestMethods
-    {
-        OPTIONS,
-        GET,
-        HEAD,
-        POST,
-        PUT,
-        DELETE,
-        TRACE,
-        CONNECT
     }
 }

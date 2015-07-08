@@ -14,155 +14,155 @@ namespace PlacesIR.GoogleSearch
     {
         // Summary:
         //     Turns off the translation between zh-CN and zh-TW.
-        public string C2coff { get; set; }
+        public string c2coff { get; set; }
         //
         // Summary:
         //     Country restrict(s).
-        public string Cr { get; set; }
+        public string cr { get; set; }
         //
         // Summary:
         //     The URL of a linked custom search engine
-        public string Cref { get; set; }
+        public string cref { get; set; }
         //
         // Summary:
         //     The custom search engine ID to scope this search query
-        public string Cx { get; set; }
+        public string cx { get; set; }
         //
         // Summary:
         //     Specifies all search results are from a time period
-        public string DateRestrict { get; set; }
+        public string dateRestrict { get; set; }
         //
         // Summary:
         //     Identifies a phrase that all documents in the search results must contain
-        public string ExactTerms { get; set; }
+        public string exactTerms { get; set; }
         //
         // Summary:
         //     Identifies a word or phrase that should not appear in any documents in the
         //     search results
-        public string ExcludeTerms { get; set; }
+        public string excludeTerms { get; set; }
         //
         // Summary:
         //     Returns images of a specified type. Some of the allowed values are: bmp,
         //     gif, png, jpg, svg, pdf, ...
-        public string FileType { get; set; }
+        public string fileType { get; set; }
         //
         // Summary:
         //     Controls turning on or off the duplicate content filter.
-        public FilterEnum? Filter { get; set; }
+        public FilterEnum? filter { get; set; }
         //
         // Summary:
         //     Geolocation of end user.
-        public string Gl { get; set; }
+        public string gl { get; set; }
         //
         // Summary:
         //     The local Google domain to use to perform the search.
-        public string Googlehost { get; set; }
+        public string googlehost { get; set; }
         //
         // Summary:
         //     Creates a range in form as_nlo value..as_nhi value and attempts to append
         //     it to query
-        public string HighRange { get; set; }
+        public string highRange { get; set; }
         //
         // Summary:
         //     Sets the user interface language.
-        public string Hl { get; set; }
+        public string hl { get; set; }
         //
         // Summary:
         //     Appends the extra query terms to the query.
-        public string Hq { get; set; }
+        public string hq { get; set; }
         //
         // Summary:
         //     Gets the HTTP method.
-        public string HttpMethod { get; set; }
+        public string httpMethod { get; set; }
         //
         // Summary:
         //     Returns black and white, grayscale, or color images: mono, gray, and color.
-        public ImgColorTypeEnum? ImgColorType { get; set; }
+        public ImgColorTypeEnum? imgColorType { get; set; }
         //
         // Summary:
         //     Returns images of a specific dominant color: yellow, green, teal, blue, purple,
         //     pink, white, gray, black and brown.
-        public ImgDominantColorEnum? ImgDominantColor { get; set; }
+        public ImgDominantColorEnum? imgDominantColor { get; set; }
         //
         // Summary:
         //     Returns images of a specified size, where size can be one of: icon, small,
         //     medium, large, xlarge, xxlarge, and huge.
-        public ImgSizeEnum? ImgSize { get; set; }
+        public ImgSizeEnum? imgSize { get; set; }
         //
         // Summary:
         //     Returns images of a type, which can be one of: clipart, face, lineart, news,
         //     and photo.
-        public ImgTypeEnum? ImgType { get; set; }
+        public ImgTypeEnum? imgType { get; set; }
         //
         // Summary:
         //     Specifies that all search results should contain a link to a particular URL
-        public string LinkSite { get; set; }
+        public string linkSite { get; set; }
         //
         // Summary:
         //     Creates a range in form as_nlo value..as_nhi value and attempts to append
         //     it to query
-        public string LowRange { get; set; }
+        public string lowRange { get; set; }
         //
         // Summary:
         //     The language restriction for the search results
-        public LrEnum? Lr { get; set; }
+        public LrEnum? lr { get; set; }
         //
         // Summary:
         //     Gets the method name.
-        public string MethodName { get; set; }
+        public string methodName { get; set; }
         //
         // Summary:
         //     Number of search results to return
-        public long? Num { get; set; }
+        public long? num { get; set; }
         //
         // Summary:
         //     Provides additional search terms to check for in a document, where each document
         //     in the search results must contain at least one of the additional search
         //     terms
-        public string OrTerms { get; set; }
+        public string orTerms { get; set; }
         //
         // Summary:
         //     Query
-        public string Q { get; set; }
+        public string q { get; set; }
         //
         // Summary:
         //     Specifies that all search results should be pages that are related to the
         //     specified URL
-        public string RelatedSite { get; set; }
+        public string relatedSite { get; set; }
         //
         // Summary:
         //     Gets the REST path.
-        public string RestPath { get; set; }
+        public string restPath { get; set; }
         //
         // Summary:
         //     Filters based on licensing. Supported values include: cc_publicdomain, cc_attribute,
         //     cc_sharealike, cc_noncommercial, cc_nonderived and combinations of these.
-        public string Rights { get; set; }
+        public string rights { get; set; }
         //
         // Summary:
         //     Search safety level
-        public SafeEnum? Safe { get; set; }
+        public SafeEnum? safe { get; set; }
         //
         // Summary:
         //     Specifies the search type: image.
-        public SearchTypeEnum? SearchType { get; set; }
+        public SearchTypeEnum? searchType { get; set; }
         //
         // Summary:
         //     Specifies all search results should be pages from a given site
-        public string SiteSearch { get; set; }
+        public string siteSearch { get; set; }
         //
         // Summary:
         //     Controls whether to include or exclude results from the site named in the
         //     as_sitesearch parameter
-        public SiteSearchFilterEnum? SiteSearchFilter { get; set; }
+        public SiteSearchFilterEnum? siteSearchFilter { get; set; }
         //
         // Summary:
         //     The sort expression to apply to the results
-        public string Sort { get; set; }
+        public string sort { get; set; }
         //
         // Summary:
         //     The index of the first result to return
-        public long? Start { get; set; }
+        public long? start { get; set; }
 
 
         // Summary:
@@ -187,17 +187,17 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     color
             [StringValue("color")]
-            Color = 0,
+            color = 0,
             //
             // Summary:
             //     gray
             [StringValue("gray")]
-            Gray = 1,
+            gray = 1,
             //
             // Summary:
             //     mono
             [StringValue("mono")]
-            Mono = 2,
+            mono = 2,
         }
 
         // Summary:
@@ -208,52 +208,52 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     black
             [StringValue("black")]
-            Black = 0,
+            black = 0,
             //
             // Summary:
             //     blue
             [StringValue("blue")]
-            Blue = 1,
+            blue = 1,
             //
             // Summary:
             //     brown
             [StringValue("brown")]
-            Brown = 2,
+            brown = 2,
             //
             // Summary:
             //     gray
             [StringValue("gray")]
-            Gray = 3,
+            gray = 3,
             //
             // Summary:
             //     green
             [StringValue("green")]
-            Green = 4,
+            green = 4,
             //
             // Summary:
             //     pink
             [StringValue("pink")]
-            Pink = 5,
+            pink = 5,
             //
             // Summary:
             //     purple
             [StringValue("purple")]
-            Purple = 6,
+            purple = 6,
             //
             // Summary:
             //     teal
             [StringValue("teal")]
-            Teal = 7,
+            teal = 7,
             //
             // Summary:
             //     white
             [StringValue("white")]
-            White = 8,
+            white = 8,
             //
             // Summary:
             //     yellow
             [StringValue("yellow")]
-            Yellow = 9,
+            yellow = 9,
         }
 
         // Summary:
@@ -264,37 +264,37 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     huge
             [StringValue("huge")]
-            Huge = 0,
+            huge = 0,
             //
             // Summary:
             //     icon
             [StringValue("icon")]
-            Icon = 1,
+            icon = 1,
             //
             // Summary:
             //     large
             [StringValue("large")]
-            Large = 2,
+            large = 2,
             //
             // Summary:
             //     medium
             [StringValue("medium")]
-            Medium = 3,
+            medium = 3,
             //
             // Summary:
             //     small
             [StringValue("small")]
-            Small = 4,
+            small = 4,
             //
             // Summary:
             //     xlarge
             [StringValue("xlarge")]
-            Xlarge = 5,
+            xlarge = 5,
             //
             // Summary:
             //     xxlarge
             [StringValue("xxlarge")]
-            Xxlarge = 6,
+            xxlarge = 6,
         }
 
         // Summary:
@@ -305,27 +305,27 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     clipart
             [StringValue("clipart")]
-            Clipart = 0,
+            clipart = 0,
             //
             // Summary:
             //     face
             [StringValue("face")]
-            Face = 1,
+            face = 1,
             //
             // Summary:
             //     lineart
             [StringValue("lineart")]
-            Lineart = 2,
+            lineart = 2,
             //
             // Summary:
             //     news
             [StringValue("news")]
-            News = 3,
+            news = 3,
             //
             // Summary:
             //     photo
             [StringValue("photo")]
-            Photo = 4,
+            photo = 4,
         }
 
         // Summary:
@@ -335,177 +335,177 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     Arabic
             [StringValue("lang_ar")]
-            LangAr = 0,
+            lang_ar = 0,
             //
             // Summary:
             //     Bulgarian
             [StringValue("lang_bg")]
-            LangBg = 1,
+            lang_bg = 1,
             //
             // Summary:
             //     Catalan
             [StringValue("lang_ca")]
-            LangCa = 2,
+            lang_ca = 2,
             //
             // Summary:
             //     Czech
             [StringValue("lang_cs")]
-            LangCs = 3,
+            lang_cs = 3,
             //
             // Summary:
             //     Danish
             [StringValue("lang_da")]
-            LangDa = 4,
+            lang_da = 4,
             //
             // Summary:
             //     German
             [StringValue("lang_de")]
-            LangDe = 5,
+            lang_de = 5,
             //
             // Summary:
             //     Greek
             [StringValue("lang_el")]
-            LangEl = 6,
+            lang_el = 6,
             //
             // Summary:
             //     English
             [StringValue("lang_en")]
-            LangEn = 7,
+            lang_en = 7,
             //
             // Summary:
             //     Spanish
             [StringValue("lang_es")]
-            LangEs = 8,
+            lang_es = 8,
             //
             // Summary:
             //     Estonian
             [StringValue("lang_et")]
-            LangEt = 9,
+            lang_et = 9,
             //
             // Summary:
             //     Finnish
             [StringValue("lang_fi")]
-            LangFi = 10,
+            lang_fi = 10,
             //
             // Summary:
             //     French
             [StringValue("lang_fr")]
-            LangFr = 11,
+            lang_fr = 11,
             //
             // Summary:
             //     Croatian
             [StringValue("lang_hr")]
-            LangHr = 12,
+            lang_hr = 12,
             //
             // Summary:
             //     Hungarian
             [StringValue("lang_hu")]
-            LangHu = 13,
+            lang_hu = 13,
             //
             // Summary:
             //     Indonesian
             [StringValue("lang_id")]
-            LangId = 14,
+            lang_id = 14,
             //
             // Summary:
             //     Icelandic
             [StringValue("lang_is")]
-            LangIs = 15,
+            lang_is = 15,
             //
             // Summary:
             //     Italian
             [StringValue("lang_it")]
-            LangIt = 16,
+            lang_it = 16,
             //
             // Summary:
             //     Hebrew
             [StringValue("lang_iw")]
-            LangIw = 17,
+            lang_iw = 17,
             //
             // Summary:
             //     Japanese
             [StringValue("lang_ja")]
-            LangJa = 18,
+            lang_ja = 18,
             //
             // Summary:
             //     Korean
             [StringValue("lang_ko")]
-            LangKo = 19,
+            lang_ko = 19,
             //
             // Summary:
             //     Lithuanian
             [StringValue("lang_lt")]
-            LangLt = 20,
+            lang_lt = 20,
             //
             // Summary:
             //     Latvian
             [StringValue("lang_lv")]
-            LangLv = 21,
+            lang_lv = 21,
             //
             // Summary:
             //     Dutch
             [StringValue("lang_nl")]
-            LangNl = 22,
+            lang_nl = 22,
             //
             // Summary:
             //     Norwegian
             [StringValue("lang_no")]
-            LangNo = 23,
+            lang_no = 23,
             //
             // Summary:
             //     Polish
             [StringValue("lang_pl")]
-            LangPl = 24,
+            lang_pl = 24,
             //
             // Summary:
             //     Portuguese
             [StringValue("lang_pt")]
-            LangPt = 25,
+            lang_pt = 25,
             //
             // Summary:
             //     Romanian
             [StringValue("lang_ro")]
-            LangRo = 26,
+            lang_ro = 26,
             //
             // Summary:
             //     Russian
             [StringValue("lang_ru")]
-            LangRu = 27,
+            lang_ru = 27,
             //
             // Summary:
             //     Slovak
             [StringValue("lang_sk")]
-            LangSk = 28,
+            lang_sk = 28,
             //
             // Summary:
             //     Slovenian
             [StringValue("lang_sl")]
-            LangSl = 29,
+            lang_sl = 29,
             //
             // Summary:
             //     Serbian
             [StringValue("lang_sr")]
-            LangSr = 30,
+            lang_sr = 30,
             //
             // Summary:
             //     Swedish
             [StringValue("lang_sv")]
-            LangSv = 31,
+            lang_sv = 31,
             //
             // Summary:
             //     Turkish
             [StringValue("lang_tr")]
-            LangTr = 32,
+            lang_tr = 32,
             //
             // Summary:
             //     Chinese (Simplified)
             [StringValue("lang_zh-CN")]
-            LangZhCN = 33,
+            lang_zh_CN = 33,
             //
             // Summary:
             //     Chinese (Traditional)
             [StringValue("lang_zh-TW")]
-            LangZhTW = 34,
+            lang_zh_TW = 34,
         }
 
         // Summary:
@@ -515,17 +515,17 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     Enables highest level of safe search filtering.
             [StringValue("high")]
-            High = 0,
+            high = 0,
             //
             // Summary:
             //     Enables moderate safe search filtering.
             [StringValue("medium")]
-            Medium = 1,
+            medium = 1,
             //
             // Summary:
             //     Disables safe search filtering.
             [StringValue("off")]
-            Off = 2,
+            off = 2,
         }
 
         // Summary:
@@ -535,7 +535,7 @@ namespace PlacesIR.GoogleSearch
             // Summary:
             //     custom image search
             [StringValue("image")]
-            Image = 0,
+            image = 0,
         }
 
         // Summary:

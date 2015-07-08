@@ -48,23 +48,36 @@ namespace PlacesIR.Summary
                     }
                 }
             }
-
-            // step 1 - search in google.
-            using (GoogleSearchClient cl = new GoogleSearchClient())
+            if (summary.Place != null)
             {
-                ReqGoogleSearch request = new ReqGoogleSearch();
-                request.Cx = "017576662512468239146:omuauf_lfve";
-                request.Q = "lecture";
-                //var test = cl.GetSearchResults(request);
+                // step 1 - search in google.
+                using (GoogleSearchClient cl = new GoogleSearchClient())
+                {
+                    ReqGoogleSearch request = new ReqGoogleSearch();
+                    request.cx = "017576662512468239146:omuauf_lfve";
+                    request.q = "lecture";
+                    //var test = cl.GetSearchResults(request);
+                }
+
+                // step 2 - Crowl content
+
+                // step 3 - Create summary
+                
+                // step 3 - Retrive images
+                using (GoogleSearchClient cl = new GoogleSearchClient())
+                {
+                    ReqGoogleSearch req = new ReqGoogleSearch();
+                    req.q = summary.Place.name;
+                    req.searchType = PlacesIR.GoogleSearch.ReqGoogleSearch.SearchTypeEnum.image;
+                    var test = cl.GetSearchResults(req);
+                }
+
+                // step 3 - Retrive video
+                
+                // step 3 - get prices if available.
+
+                HttpRuntime.Cache.Insert(cacheKey, summary, null, DateTime.Now.AddHours(4), TimeSpan.Zero);
             }
-
-            // step 2 - Crowl content
-            // step 3 - Create summary
-            // step 3 - Retrive images
-            // step 3 - Retrive video
-            // step 3 - get prices if available.
-
-            HttpRuntime.Cache.Insert(cacheKey, summary, null, DateTime.Now.AddHours(4), TimeSpan.Zero);
 
             response.Obj = summary;
             return response;

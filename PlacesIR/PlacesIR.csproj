@@ -181,20 +181,16 @@
     <Content Include="Views\Home\Home.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Entities\AddressComponent.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Entities\Geometry.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Entities\Hours.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Entities\Photo.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Entities\Place.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Entities\Review.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\GooglePlacesClient.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Requests\GoogleApiRequest.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Requests\ReqNearByPlaces.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Requests\ReqQueryPlaces.cs" />
-    <Content Include="App_Code\ApiClients\GooglePlacesClient\Responses\GoogleApiResponse.cs" />
-    <Content Include="App_Code\ApiClients\ValidationResponse.cs" />
-    <Content Include="App_Code\Extentions.cs" />
-    <Content Include="App_Code\LogHandler.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\AylienClient.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Entities\Microformats.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Requests\BaseReq.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Requests\ReqMicroformats.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Requests\ReqLangDetect.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Requests\ReqSummarise.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Requests\ReqExtract.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Responses\LangDetectionResponse.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Responses\SummaryResponse.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\AylienClient\Responses\ExtractResponse.cs" />
     <Compile Include="App_Code_Folder\ApiClients\GooglePlacesClient\Requests\ReqPlaceDetails.cs" />
     <Compile Include="App_Code_Folder\ApiClients\GoogleSearchClient\Entities\Entities.cs" />
     <Compile Include="App_Code_Folder\ApiClients\GoogleSearchClient\GoogleSearchClient.cs" />

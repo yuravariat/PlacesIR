@@ -30,6 +30,7 @@ namespace PlacesIR.GooglePlaces
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.AssumeUtc = false;
             JsConfig.AppendUtcOffset = false;
+            JsConfig.ExcludeTypeInfo = true;
 
             //JsConfig.JsonParseDatesOnlyToJson = true;
         }
