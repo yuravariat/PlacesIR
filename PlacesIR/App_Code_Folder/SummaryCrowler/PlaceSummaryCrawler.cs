@@ -51,13 +51,12 @@ namespace PlacesIR.Summary
             if (summary.Place != null)
             {
                 // step 1 - search in google.
-                using (GoogleSearchClient cl = new GoogleSearchClient())
-                {
-                    ReqGoogleSearch request = new ReqGoogleSearch();
-                    request.cx = "017576662512468239146:omuauf_lfve";
-                    request.q = "lecture";
+                //using (GoogleSearchClient cl = new GoogleSearchClient())
+                //{
+                    //ReqGoogleSearch req = new ReqGoogleSearch();
+                    //req.q = summary.Place.name;
                     //var test = cl.GetSearchResults(request);
-                }
+                //}
 
                 // step 2 - Crowl content
 
@@ -69,7 +68,18 @@ namespace PlacesIR.Summary
                     ReqGoogleSearch req = new ReqGoogleSearch();
                     req.q = summary.Place.name;
                     req.searchType = PlacesIR.GoogleSearch.ReqGoogleSearch.SearchTypeEnum.image;
-                    var test = cl.GetSearchResults(req);
+                    var imgResp = cl.GetSearchResults(req);
+                    if (imgResp.Obj != null && imgResp.Obj.Items != null)
+                    {
+                        foreach (var item in imgResp.Obj.Items)
+                        {
+                            Image img = new Image();
+                            img.title = item.Title;
+                            img.url = item.Link;
+                            img.thumb_url = item.Image.ThumbnailLink;
+                            summary.Images.Add(img);
+                        }
+                    }
                 }
 
                 // step 3 - Retrive video

@@ -334,14 +334,31 @@ Search.PlaceSummaryDetails = function () {
             for (var i in Search.CurrentPlaceSummary.Place.photos) {
                 if (!isNaN(i)) {
                     var image = $('<div/>', { 'class': 'image-item' });
-                    var url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + Search.CurrentPlaceSummary.Place.photos[i].photo_reference +
+                    var thumb_url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + Search.CurrentPlaceSummary.Place.photos[i].photo_reference +
                             '&sensor=false&maxheight=200&maxwidth=200&key=' + Search.ApiKey;
-                    image.append('<img src="' + url + '" alt="" title="" />');
+                    var url = 'https://maps.googleapis.com/maps/api/place/photo?photoreference=' + Search.CurrentPlaceSummary.Place.photos[i].photo_reference +
+                            '&sensor=false&maxheight=1000&maxwidth=1000&key=' + Search.ApiKey;
 
+                    image.append('<div class="img"><a href="' + url + '" rel="prettyPhoto[' + Search.CurrentPlaceSummary.PlaceIDToSummarize + ']" title="' + Search.CurrentPlaceSummary.Place.name + '">' +
+                                '<img src="' + thumb_url + '" alt="' + Search.CurrentPlaceSummary.Place.name + '" title="' + Search.CurrentPlaceSummary.Place.name + '" /></a></div>');
+                    image.append('<label>' + Search.CurrentPlaceSummary.Place.name + '</label>');
                     $('#place-details-images').append(image);
                 }
             }
         }
+        if (typeof Search.CurrentPlaceSummary.Images != 'undefined') {
+            for (var i in Search.CurrentPlaceSummary.Images) {
+                if (!isNaN(i)) {
+                    var image = $('<div/>', { 'class': 'image-item' });
+                    var title = Search.CurrentPlaceSummary.Images[i].title;
+                    image.append('<div class="img"><a href="' + Search.CurrentPlaceSummary.Images[i].url + '" rel="prettyPhoto[' + Search.CurrentPlaceSummary.PlaceIDToSummarize + ']" title="' + title + '">' +
+                                '<img src="' + Search.CurrentPlaceSummary.Images[i].thumb_url + '" alt="' + title + '" title="' + title + '" /></a></div>');
+                    image.append('<label>' + title + '</label>');
+                    $('#place-details-images').append(image);
+                }
+            }
+        }
+        $("#place-details-images a[rel^='prettyPhoto']").prettyPhoto();
 
         // Reviews
         $('#place-details-reviews').empty();

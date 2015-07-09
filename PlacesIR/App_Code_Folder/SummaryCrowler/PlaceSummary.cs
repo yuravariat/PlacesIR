@@ -11,6 +11,7 @@ namespace PlacesIR.Summary
     {
         public string PlaceIDToSummarize { get; set; }
         public Place Place { get; set; }
+        public List<Image> Images { get; set; }
         public bool IsValid
         {
             get
@@ -18,8 +19,11 @@ namespace PlacesIR.Summary
                 return !string.IsNullOrEmpty(PlaceIDToSummarize) && Place != null;
             }
         }
-        public PlaceSummary() { }
-        public PlaceSummary(string placeIDToSummarize)
+        public PlaceSummary() 
+        {
+            Images = new List<Image>();
+        }
+        public PlaceSummary(string placeIDToSummarize) : this()
         {
             PlaceIDToSummarize = placeIDToSummarize;
         }
