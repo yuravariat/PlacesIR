@@ -42,11 +42,17 @@ namespace PlacesIR.Controllers.Api
     {
         RequestPlaceDetails() { }
         private string placeID;
+        private string mainPlaceName;
 
         public string PlaceID
         {
             get { return placeID; }
             set { placeID = value; }
+        }
+        public string MainPlaceName
+        {
+            get { return mainPlaceName; }
+            set { mainPlaceName = value; }
         }
     }
 }

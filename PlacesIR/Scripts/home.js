@@ -1,5 +1,10 @@
 var GlobalFunctions = {};
 var Search = {};
+
+Search.CurrentMainPlaceName = null;
+Search.CurrentDistance = null;
+Search.CurrentKeywords = null;
+
 Search.CurrentLocations = null;
 Search.CurrentPlaceSummary = null;
 Search.SearchFromValidationRules = null;
@@ -107,9 +112,9 @@ Search.FindLocationsAction = function () {
         }
 
         var data = {};
-        data.place = $('#inp-place-name').val();
-        data.keywords = $('#inp-keywords').val();
-        data.distance = Number($('#inp-distance').val()) * 1000;
+        Search.CurrentMainPlaceName = data.place = $('#inp-place-name').val();
+        Search.CurrentKeywords = data.keywords = $('#inp-keywords').val();
+        Search.CurrentDistance = data.distance = Number($('#inp-distance').val()) * 1000;
         data.rankby = $('#inp-rank-by').val();
 
         $('#place-details-panel').hide();
@@ -270,6 +275,7 @@ Search.GetPlaceDetails = function (placeID) {
 
         var data = {};
         data.placeID = placeID;
+        data.mainPlaceName = Search.CurrentMainPlaceName;
 
         $(window).trigger('Search.ShowLoading');
         GlobalFunctions.JqueryAjax({

@@ -11,7 +11,7 @@ namespace PlacesIR.Summary
 {
     public class PlaceSummaryCrawler
     {
-        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize, string lang = "lang_en")
+        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize,string mainPlaceNearByName, string lang = "lang_en")
         {
             ValidationResponse<PlaceSummary> response = new ValidationResponse<PlaceSummary>();
 
@@ -56,7 +56,7 @@ namespace PlacesIR.Summary
                 using (GoogleSearchClient clWebPages = new GoogleSearchClient())
                 {
                     ReqGoogleSearch req = new ReqGoogleSearch();
-                    req.q = summary.Place.name;
+                    req.q = summary.Place.name + ", " + mainPlaceNearByName;
                     var imgResp = clWebPages.GetSearchResults(req);
                     if (imgResp.Obj != null && imgResp.Obj.Items != null && imgResp.Obj.Items.Count>0)
                     {
@@ -102,7 +102,7 @@ namespace PlacesIR.Summary
                 using (GoogleSearchClient clImages = new GoogleSearchClient())
                 {
                     ReqGoogleSearch req = new ReqGoogleSearch();
-                    req.q = summary.Place.name;
+                    req.q = summary.Place.name + ", " + mainPlaceNearByName;
                     req.searchType = PlacesIR.GoogleSearch.ReqGoogleSearch.SearchTypeEnum.image;
                     var imgResp = clImages.GetSearchResults(req);
                     if (imgResp.Obj != null && imgResp.Obj.Items != null)
