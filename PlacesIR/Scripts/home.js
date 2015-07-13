@@ -346,7 +346,8 @@ Search.PlaceSummaryDetails = function () {
                             '&sensor=false&maxheight=1000&maxwidth=1000&key=' + Search.ApiKey;
 
                     image.append('<div class="img"><a href="' + url + '" rel="prettyPhoto[' + Search.CurrentPlaceSummary.PlaceIDToSummarize + ']" title="' + Search.CurrentPlaceSummary.Place.name + '">' +
-                                '<img src="' + thumb_url + '" alt="' + Search.CurrentPlaceSummary.Place.name + '" title="' + Search.CurrentPlaceSummary.Place.name + '" /></a></div>');
+                        '<span class="icon glyphicon glyphicon-zoom-in" aria-hidden="true"></span>' +
+                        '<img src="' + thumb_url + '" alt="' + Search.CurrentPlaceSummary.Place.name + '" title="' + Search.CurrentPlaceSummary.Place.name + '" /></a></div>');
                     image.append('<label>' + Search.CurrentPlaceSummary.Place.name + '</label>');
                     $('#place-details-images').append(image);
                 }
@@ -358,7 +359,8 @@ Search.PlaceSummaryDetails = function () {
                     var image = $('<div/>', { 'class': 'image-item' });
                     var title = Search.CurrentPlaceSummary.Images[i].title;
                     image.append('<div class="img"><a href="' + Search.CurrentPlaceSummary.Images[i].url + '" rel="prettyPhoto[' + Search.CurrentPlaceSummary.PlaceIDToSummarize + ']" title="' + title + '">' +
-                                '<img src="' + Search.CurrentPlaceSummary.Images[i].thumb_url + '" alt="' + title + '" title="' + title + '" /></a></div>');
+                        '<span class="icon glyphicon glyphicon-zoom-in" aria-hidden="true"></span>' +
+                        '<img src="' + Search.CurrentPlaceSummary.Images[i].thumb_url + '" alt="' + title + '" title="' + title + '" /></a></div>');
                     image.append('<label>' + title + '</label>');
                     $('#place-details-images').append(image);
                 }
@@ -393,8 +395,27 @@ Search.PlaceSummaryDetails = function () {
         }
 
         // Videos
+        $('#place-details-videos').empty();
+        if (typeof Search.CurrentPlaceSummary.Videos != 'undefined') {
+            for (var i in Search.CurrentPlaceSummary.Videos) {
+                if (!isNaN(i)) {
+                    var image = $('<div/>', { 'class': 'image-item' });
+                    var title = Search.CurrentPlaceSummary.Videos[i].snippet.title;
+                    var videosUrl = 'http://www.youtube.com/watch?v=' + Search.CurrentPlaceSummary.Videos[i].id.videoId;
+                    var thumb_image_url = Search.CurrentPlaceSummary.Videos[i].snippet.thumbnails.Default.url;
+                    image.append('<div class="img"><a href="' + videosUrl + '" rel="prettyPhoto[video-' + Search.CurrentPlaceSummary.PlaceIDToSummarize + ']" title="' + title + '">' +
+                            '<span class="icon glyphicon glyphicon-play-circle" aria-hidden="true"></span>' +
+                            '<img src="' + thumb_image_url + '" alt="' + title + '" title="' + title + '" /></a></div>');
+                    image.append('<label>' + title + '</label>');
+                    $('#place-details-videos').append(image);
+                }
+            }
+        }
         if ($('#place-details-videos').children().length == 0) {
             $('#place-details-videos').append('<div>Not found</div>');
+        }
+        else {
+            $("#place-details-videos a[rel^='prettyPhoto']").prettyPhoto();
         }
     }
 }

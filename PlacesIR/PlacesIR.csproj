@@ -237,8 +237,10 @@
     <Compile Include="App_Code_Folder\ApiClients\AylienClient\Responses\SummaryResponse.cs" />
     <Compile Include="App_Code_Folder\ApiClients\AylienClient\Responses\ExtractResponse.cs" />
     <Compile Include="App_Code_Folder\ApiClients\GooglePlacesClient\Requests\ReqPlaceDetails.cs" />
+    <Compile Include="App_Code_Folder\ApiClients\YouTubeClient\Requests\ReqSearch.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="App_Code_Folder\ApiClients\YouTubeClient\YouTubeClient.cs" />
-    <Compile Include="App_Code_Folder\ApiClients\YouTubeClient\Requests\ReqSearch.cs" />
     <Compile Include="App_Code_Folder\ApiClients\YouTubeClient\Responses\YoutubeSearchResponse.cs" />
     <Compile Include="App_Code_Folder\ApiClients\GoogleSearchClient\Entities\Entities.cs" />
     <Compile Include="App_Code_Folder\ApiClients\GoogleSearchClient\GoogleSearchClient.cs" />

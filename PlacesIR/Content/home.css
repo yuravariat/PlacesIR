@@ -120,7 +120,7 @@ h5{
     clear:both;
     max-width:900px;
 }
-#place-details-images .image-item{
+.gallery-collection .image-item{
     float: left;
     margin: 4px;
     background: #eee;
@@ -129,16 +129,37 @@ h5{
     height: 180px;
     border: 1px solid #ddd;
 }
-#place-details-images .image-item .img{
+.gallery-collection .image-item .img{
     margin:auto;
     clear:both;
     text-align:center;
+    position:relative;
 }
-#place-details-images .image-item img{
+.gallery-collection .image-item .img .icon{
+    position: absolute;
+    top: 30%;
+    left: 42%;
+    color: white;
+    font-size: 27px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+#place-details-images .image-item .img .icon {
+    opacity:0;
+}
+.gallery-collection .image-item .img:hover .icon,
+#place-details-images .image-item .img:hover .icon {
+    opacity:1;
+    top: 25%;
+    left: 40%;
+    font-size: 35px;
+}
+.gallery-collection .image-item img{
     max-height:150px;
     max-width:198px;
 }
-#place-details-images .image-item label{
+.gallery-collection .image-item label{
     float:left;
     font-size:11px;
 }
