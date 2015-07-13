@@ -142,3 +142,7 @@ h5{
     float:left;
     font-size:11px;
 }
+#place-details-overview,.place-overview-div label{
+    max-width:700px;
+    float:left;
+}

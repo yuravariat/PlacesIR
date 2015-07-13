@@ -12,6 +12,7 @@ namespace PlacesIR.Summary
         public string PlaceIDToSummarize { get; set; }
         public Place Place { get; set; }
         public List<Image> Images { get; set; }
+        public string MainSummaryText { get; set; }
         public bool IsValid
         {
             get

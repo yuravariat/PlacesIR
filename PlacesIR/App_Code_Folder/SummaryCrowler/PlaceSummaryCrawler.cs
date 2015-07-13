@@ -1,4 +1,5 @@
-﻿using PlacesIR.GooglePlaces;
+﻿using PlacesIR.Aylien;
+using PlacesIR.GooglePlaces;
 using PlacesIR.GoogleSearch;
 using System;
 using System.Collections.Generic;
@@ -51,24 +52,59 @@ namespace PlacesIR.Summary
             if (summary.Place != null)
             {
                 // step 1 - search in google.
-                //using (GoogleSearchClient cl = new GoogleSearchClient())
-                //{
-                    //ReqGoogleSearch req = new ReqGoogleSearch();
-                    //req.q = summary.Place.name;
-                    //var test = cl.GetSearchResults(request);
-                //}
+                Result webpageResult = null;
+                using (GoogleSearchClient clWebPages = new GoogleSearchClient())
+                {
+                    ReqGoogleSearch req = new ReqGoogleSearch();
+                    req.q = summary.Place.name;
+                    var imgResp = clWebPages.GetSearchResults(req);
+                    if (imgResp.Obj != null && imgResp.Obj.Items != null && imgResp.Obj.Items.Count>0)
+                    {
+                        webpageResult = imgResp.Obj.Items[0];
+                    }
+                }
 
-                // step 2 - Crowl content
+                // step 2 - Create summary
+                summary.MainSummaryText = summary.Place.name;
+                if (webpageResult != null)
+                {
+                    using (AylienClient summClient = new AylienClient())
+                    {
+                        // short way
+                        ReqSummarise summReq = new ReqSummarise();
+                        summReq.url = webpageResult.Link;
+                        summReq.sentences_number = 3;
+                        var summResp = summClient.Summarise(summReq);
+                        if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
+                        {
+                            summary.MainSummaryText = summResp.Obj.text;
+                        }
 
-                // step 3 - Create summary
+                        // long way
+                        //ReqExtract extrTextReq = new ReqExtract();
+                        //extrTextReq.url = webpageResult.Link;
+                        //var resp = summClient.ExtractArticle(extrTextReq);
+                        //if (resp.Obj != null && !string.IsNullOrEmpty(resp.Obj.article))
+                        //{
+                        //    ReqSummarise summReq = new ReqSummarise();
+                        //    summReq.text = resp.Obj.article;
+                        //    summReq.sentences_number = 3;
+                        //    var summResp = summClient.Summarise(summReq);
+                        //    if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
+                        //    {
+                        //        summary.MainSummaryText = summResp.Obj.text;
+                        //    }
+                        //}
+                    }
+                }
                 
                 // step 3 - Retrive images
-                using (GoogleSearchClient cl = new GoogleSearchClient())
+                using (GoogleSearchClient clImages = new GoogleSearchClient())
                 {
                     ReqGoogleSearch req = new ReqGoogleSearch();
                     req.q = summary.Place.name;
                     req.searchType = PlacesIR.GoogleSearch.ReqGoogleSearch.SearchTypeEnum.image;
-                    var imgResp = cl.GetSearchResults(req);
+                    var imgResp = clImages.GetSearchResults(req);
                     if (imgResp.Obj != null && imgResp.Obj.Items != null)
                     {
                         foreach (var item in imgResp.Obj.Items)
@@ -82,9 +118,9 @@ namespace PlacesIR.Summary
                     }
                 }
 
-                // step 3 - Retrive video
+                // step 4 - Retrive video
                 
-                // step 3 - get prices if available.
+                // step 5 - get prices if available.
 
                 HttpRuntime.Cache.Insert(cacheKey, summary, null, DateTime.Now.AddHours(4), TimeSpan.Zero);
             }

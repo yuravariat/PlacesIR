@@ -321,7 +321,7 @@ Search.PlaceSummaryDetails = function () {
             $('#place-details-rating-stars').width(0);
             $('#place-details-rating').html('Not rated');
         }
-        $('#place-details-overview').html(Search.CurrentPlaceSummary.Place.name);
+        $('#place-details-overview').html(Search.CurrentPlaceSummary.MainSummaryText);
         $('#place-details-address').html(Search.CurrentPlaceSummary.Place.formatted_address);
         $('#place-details-vicinity').html(Search.CurrentPlaceSummary.Place.vicinity);
         $('#place-details-phone').html(Search.CurrentPlaceSummary.Place.international_phone_number);
@@ -358,7 +358,14 @@ Search.PlaceSummaryDetails = function () {
                 }
             }
         }
-        $("#place-details-images a[rel^='prettyPhoto']").prettyPhoto();
+        if ($('#place-details-images').children().length == 0) {
+            $('#place-details-images').append('<div>Not found</div>');
+        }
+        else {
+            $("#place-details-images a[rel^='prettyPhoto']").prettyPhoto();
+        }
+
+
 
         // Reviews
         $('#place-details-reviews').empty();
@@ -374,6 +381,14 @@ Search.PlaceSummaryDetails = function () {
                     $('#place-details-reviews').append(review);
                 }
             }
+        }
+        if ($('#place-details-reviews').children().length == 0) {
+            $('#place-details-reviews').append('<div>Not found</div>');
+        }
+
+        // Videos
+        if ($('#place-details-videos').children().length == 0) {
+            $('#place-details-videos').append('<div>Not found</div>');
         }
     }
 }
