@@ -1,6 +1,7 @@
 ﻿using PlacesIR.Aylien;
 using PlacesIR.GooglePlaces;
 using PlacesIR.GoogleSearch;
+using PlacesIR.YouTube;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,8 +119,19 @@ namespace PlacesIR.Summary
                     }
                 }
 
-                // step 4 - Retrive video
+                // step 4 - Retrive videos
+                using (YouTubeClient YouTubeClient = new YouTubeClient())
+                {
+                    ReqSearch req = new ReqSearch();
+                    req.q = summary.Place.name + ", " + mainPlaceNearByName;
+                    var youResp = YouTubeClient.GetSearchResults(req);
+                    if (youResp.Obj != null && youResp.Obj.items != null)
+                    {
+                        summary.Videos = youResp.Obj.items;
+                    }
+                }
                 
+
                 // step 5 - get prices if available.
 
                 HttpRuntime.Cache.Insert(cacheKey, summary, null, DateTime.Now.AddHours(4), TimeSpan.Zero);

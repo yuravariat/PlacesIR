@@ -4,9 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ServiceStack.Text;
-using PlacesIR.GoogleSearch;
-using PlacesIR.Summary;
-using PlacesIR.Aylien;
 
 namespace PlacesIR
 {
