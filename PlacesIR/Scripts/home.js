@@ -328,6 +328,7 @@ Search.PlaceSummaryDetails = function () {
             $('#place-details-rating').html('Not rated');
         }
         $('#place-details-overview').html(Search.CurrentPlaceSummary.MainSummaryText);
+        $('#place-details-source').html(Search.CurrentPlaceSummary.MainSummarySourceUrl != '' ? '<a target="_blank" href="' + Search.CurrentPlaceSummary.MainSummarySourceUrl + '">' + Search.CurrentPlaceSummary.MainSummarySourceUrl + '</a>' : 'none');
         $('#place-details-address').html(Search.CurrentPlaceSummary.Place.formatted_address);
         $('#place-details-vicinity').html(Search.CurrentPlaceSummary.Place.vicinity);
         $('#place-details-phone').html(Search.CurrentPlaceSummary.Place.international_phone_number);

@@ -67,6 +67,7 @@ namespace PlacesIR.Summary
 
                 // step 2 - Create summary
                 summary.MainSummaryText = summary.Place.name;
+                summary.MainSummarySourceUrl = "";
                 if (webpageResult != null)
                 {
                     using (AylienClient summClient = new AylienClient())
@@ -74,11 +75,12 @@ namespace PlacesIR.Summary
                         // short way
                         ReqSummarise summReq = new ReqSummarise();
                         summReq.url = webpageResult.Link;
-                        summReq.sentences_number = 3;
+                        summReq.sentences_number = 4;
                         var summResp = summClient.Summarise(summReq);
                         if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                         {
                             summary.MainSummaryText = summResp.Obj.text;
+                            summary.MainSummarySourceUrl = webpageResult.Link;
                         }
 
                         // long way
