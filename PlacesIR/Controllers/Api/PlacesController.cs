@@ -83,9 +83,13 @@ namespace PlacesIR.Controllers.Api
                 response.Errors.Add("placeID", "placeID can not be empty");
                 return Json(response);
             }
+            if (string.IsNullOrEmpty(req.Lang))
+            {
+                req.Lang = "en";
+            }
             try
             {
-                response = PlaceSummaryCrawler.PrepareSummary(req.PlaceID, req.MainPlaceName);
+                response = PlaceSummaryCrawler.PrepareSummary(req.PlaceID, req.MainPlaceName, req.Lang);
             }
             catch (Exception ex)
             {

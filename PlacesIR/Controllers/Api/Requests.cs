@@ -43,6 +43,7 @@ namespace PlacesIR.Controllers.Api
         RequestPlaceDetails() { }
         private string placeID;
         private string mainPlaceName;
+        private string lang;
 
         public string PlaceID
         {
@@ -53,6 +54,18 @@ namespace PlacesIR.Controllers.Api
         {
             get { return mainPlaceName; }
             set { mainPlaceName = value; }
+        }
+        public string Lang
+        {
+            get
+            {
+                return lang;
+            }
+
+            set
+            {
+                lang = value;
+            }
         }
     }
 }

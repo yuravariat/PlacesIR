@@ -105,7 +105,7 @@ namespace PlacesIR.GoogleSearch
         //
         // Summary:
         //     The language restriction for the search results
-        public LrEnum? lr { get; set; }
+        public string lr { get; set; }
         //
         // Summary:
         //     Gets the method name.

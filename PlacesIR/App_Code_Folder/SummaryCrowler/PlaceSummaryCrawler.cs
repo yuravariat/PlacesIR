@@ -12,7 +12,7 @@ namespace PlacesIR.Summary
 {
     public class PlaceSummaryCrawler
     {
-        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize,string mainPlaceNearByName, string lang = "lang_en")
+        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize,string mainPlaceNearByName, string lang = "en")
         {
             ValidationResponse<PlaceSummary> response = new ValidationResponse<PlaceSummary>();
 
@@ -37,7 +37,8 @@ namespace PlacesIR.Summary
             using (GooglePlacesClient placesClient = new GooglePlacesClient())
             {
                 var placeRes = placesClient.GetPlacesDetails(new ReqPlaceDetails() {
-                    placeid = summary.PlaceIDToSummarize
+                    placeid = summary.PlaceIDToSummarize,
+                    language = lang
                 });
                 if (placeRes.Obj != null)
                 {
@@ -58,6 +59,8 @@ namespace PlacesIR.Summary
                 {
                     ReqGoogleSearch req = new ReqGoogleSearch();
                     req.q = summary.Place.name + ", " + mainPlaceNearByName;
+                    req.hl = lang;
+                    req.lr = "lang_" + lang;
                     var imgResp = clWebPages.GetSearchResults(req);
                     if (imgResp.Obj != null && imgResp.Obj.Items != null && imgResp.Obj.Items.Count>0)
                     {
@@ -76,6 +79,7 @@ namespace PlacesIR.Summary
                         ReqSummarise summReq = new ReqSummarise();
                         summReq.url = webpageResult.Link;
                         summReq.sentences_number = 4;
+                        summReq.language = "auto";
                         var summResp = summClient.Summarise(summReq);
                         if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                         {
@@ -101,12 +105,13 @@ namespace PlacesIR.Summary
                     }
                 }
                 
-                // step 3 - Retrive images
+                // step 3 - Retrieve images
                 using (GoogleSearchClient clImages = new GoogleSearchClient())
                 {
                     ReqGoogleSearch req = new ReqGoogleSearch();
                     req.q = summary.Place.name + ", " + mainPlaceNearByName;
                     req.searchType = PlacesIR.GoogleSearch.ReqGoogleSearch.SearchTypeEnum.image;
+                    req.hl = lang;
                     var imgResp = clImages.GetSearchResults(req);
                     if (imgResp.Obj != null && imgResp.Obj.Items != null)
                     {
@@ -121,20 +126,22 @@ namespace PlacesIR.Summary
                     }
                 }
 
-                // step 4 - Retrive videos
+                // step 4 - Retrieve videos
                 using (YouTubeClient YouTubeClient = new YouTubeClient())
                 {
                     ReqSearch req = new ReqSearch();
                     req.q = summary.Place.name + ", " + mainPlaceNearByName;
+                    req.relevanceLanguage = lang;
                     var youResp = YouTubeClient.GetSearchResults(req);
                     if (youResp.Obj != null && youResp.Obj.items != null)
                     {
                         summary.Videos = youResp.Obj.items;
                     }
                 }
-                
+
 
                 // step 5 - get prices if available.
+                // TODO Retrieve prices if available
 
                 HttpRuntime.Cache.Insert(cacheKey, summary, null, DateTime.Now.AddHours(4), TimeSpan.Zero);
             }

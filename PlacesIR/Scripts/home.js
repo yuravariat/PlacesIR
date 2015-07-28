@@ -12,7 +12,7 @@ Search.PlaceItemTemplate = null;
 Search.GoogleMapMarkers = {};
 Search.ApiKey = null;
 
-GlobalFunctions.JqueryAjax = function(options) {
+GlobalFunctions.JqueryAjax = function (options) {
     var settings = $.extend({
         url: '',
         data: {},
@@ -191,83 +191,83 @@ Search.PlaceSelected = function (liElement, frommap) {
         google.maps.event.trigger(Search.GoogleMapMarkers[$(liElement).attr("rel")], 'click');
     }
 }
-Search.DrawGoogleMap = function (centerPlace,nearByPlaces,distance) {
-	if(typeof centerPlace!='undefined'){
-	    var mapOptions = {
-	        center: { lat: centerPlace.geometry.location.lat, lng: centerPlace.geometry.location.lng },
-	        zoom: Search.ComputeZoomLevel(distance/1000)
-	    };
-	    var map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
-	    
-	    //setting markers
-	    $.each(nearByPlaces,function( index, place ) {
-	        var contentString = '<div id="content">'+
-		        '<div class="place-popup">'+
-		        '<h4>' + place.name + '</h4>'+
-		        '<div id="bodyContent">'+
-		        place.name+
-		        '</div>'+
+Search.DrawGoogleMap = function (centerPlace, nearByPlaces, distance) {
+    if (typeof centerPlace != 'undefined') {
+        var mapOptions = {
+            center: { lat: centerPlace.geometry.location.lat, lng: centerPlace.geometry.location.lng },
+            zoom: Search.ComputeZoomLevel(distance / 1000)
+        };
+        var map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
+
+        //setting markers
+        $.each(nearByPlaces, function (index, place) {
+            var contentString = '<div id="content">' +
+		        '<div class="place-popup">' +
+		        '<h4>' + place.name + '</h4>' +
+		        '<div id="bodyContent">' +
+		        place.name +
+		        '</div>' +
 		        '</div>';
-	
-		    var infowindow = new google.maps.InfoWindow({
-		        content: contentString
-		    });
-	        
-	        var pinIcon = new google.maps.MarkerImage(
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            var pinIcon = new google.maps.MarkerImage(
 	            place.icon,
 	            null, /* size is determined at runtime */
 	            null, /* origin is 0,0 */
 	            null, /* anchor is bottom center of the scaled image */
 	            new google.maps.Size(20, 20)
 	        )
-	        var marker = new google.maps.Marker({
-	            id: place.place_id,
-	            position: new google.maps.LatLng(place.geometry.location.lat, place.geometry.location.lng),
-	            map: map,
-	            title: place.name,
-	            animation: google.maps.Animation.DROP,
-	            icon: index == 0 ? null : pinIcon
-	        });
-	        google.maps.event.addListener(marker, 'click', function(e) {
-	            var item = $('#places-results>ul>li[rel=' + marker.id + ']');
-	            if (item.length > 0 && !item.hasClass('active')) {
-	                item.trigger("click", true);
-	            }
-	            else {
-	                for (var v in Search.GoogleMapMarkers) {
-	                    Search.GoogleMapMarkers[v].infowindow.close();
-	                }
-	                infowindow.open(map,marker);
-	            }
-	        });
-	        // Push the marker to the 'markers' array
-	        Search.GoogleMapMarkers[place.place_id] = marker;
-	        Search.GoogleMapMarkers[place.place_id].infowindow = infowindow;
-	        
-	        //add listener to google maps (fix size issue)
-	        google.maps.event.addListenerOnce(map, 'idle', function () {
-	           google.maps.event.trigger(map, 'resize');
-	        });
-	    });
-	}
+            var marker = new google.maps.Marker({
+                id: place.place_id,
+                position: new google.maps.LatLng(place.geometry.location.lat, place.geometry.location.lng),
+                map: map,
+                title: place.name,
+                animation: google.maps.Animation.DROP,
+                icon: index == 0 ? null : pinIcon
+            });
+            google.maps.event.addListener(marker, 'click', function (e) {
+                var item = $('#places-results>ul>li[rel=' + marker.id + ']');
+                if (item.length > 0 && !item.hasClass('active')) {
+                    item.trigger("click", true);
+                }
+                else {
+                    for (var v in Search.GoogleMapMarkers) {
+                        Search.GoogleMapMarkers[v].infowindow.close();
+                    }
+                    infowindow.open(map, marker);
+                }
+            });
+            // Push the marker to the 'markers' array
+            Search.GoogleMapMarkers[place.place_id] = marker;
+            Search.GoogleMapMarkers[place.place_id].infowindow = infowindow;
+
+            //add listener to google maps (fix size issue)
+            google.maps.event.addListenerOnce(map, 'idle', function () {
+                google.maps.event.trigger(map, 'resize');
+            });
+        });
+    }
 }
-Search.ComputeZoomLevel = function(distance){
-	var zoom = 15;
-	if(distance>1){
-		if(distance<4){
-			zoom -=2;
-		}
-		else if(distance>4 && distance<10){
-			zoom -=4;
-		}
-		else if(distance>10 && distance<30){
-			zoom -=6;
-		}
-	}
-	return zoom;
+Search.ComputeZoomLevel = function (distance) {
+    var zoom = 15;
+    if (distance > 1) {
+        if (distance < 4) {
+            zoom -= 2;
+        }
+        else if (distance > 4 && distance < 10) {
+            zoom -= 4;
+        }
+        else if (distance > 10 && distance < 30) {
+            zoom -= 6;
+        }
+    }
+    return zoom;
 }
 Search.GetPlaceDetailsLock = false;
-Search.GetPlaceDetails = function (placeID) {
+Search.GetPlaceDetails = function (placeID, lang) {
 
     if (!Search.GetPlaceDetailsLock) {
 
@@ -276,6 +276,7 @@ Search.GetPlaceDetails = function (placeID) {
         var data = {};
         data.placeID = placeID;
         data.mainPlaceName = Search.CurrentMainPlaceName;
+        data.lang = lang;
 
         $(window).trigger('Search.ShowLoading');
         GlobalFunctions.JqueryAjax({
@@ -320,7 +321,7 @@ Search.PlaceSummaryDetails = function () {
         $('#place-details-name').html(Search.CurrentPlaceSummary.Place.name);
         if (typeof Search.CurrentPlaceSummary.Place.rating != 'undefined' && !isNaN(Search.CurrentPlaceSummary.Place.rating)) {
             var width = $('#place-details-rating-stars .images').width();
-            $('#place-details-rating-stars').width(parseInt((Search.CurrentPlaceSummary.Place.rating/5) * width));
+            $('#place-details-rating-stars').width(parseInt((Search.CurrentPlaceSummary.Place.rating / 5) * width));
             $('#place-details-rating').html(Search.CurrentPlaceSummary.Place.rating);
         }
         else {
@@ -431,7 +432,8 @@ $(document).ready(function (e) {
         var selectedPlace = $('#places-results>ul>li.active');
         if (selectedPlace.length > 0) {
             var place_id = selectedPlace.attr('rel');
-            Search.GetPlaceDetails(place_id);
+            var lang = $('#search-inf-lang').val();
+            Search.GetPlaceDetails(place_id, lang);
         }
         else {
             alert('please select place');
