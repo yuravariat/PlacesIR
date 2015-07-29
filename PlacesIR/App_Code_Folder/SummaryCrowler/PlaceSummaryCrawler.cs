@@ -12,7 +12,7 @@ namespace PlacesIR.Summary
 {
     public class PlaceSummaryCrawler
     {
-        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize,string mainPlaceNearByName, string lang = "en")
+        public static ValidationResponse<PlaceSummary> PrepareSummary(string placeIDToSummarize, string mainPlaceNearByName, string lang = "en")
         {
             ValidationResponse<PlaceSummary> response = new ValidationResponse<PlaceSummary>();
 
@@ -36,7 +36,8 @@ namespace PlacesIR.Summary
             // step 0 - gt place details from places api.
             using (GooglePlacesClient placesClient = new GooglePlacesClient())
             {
-                var placeRes = placesClient.GetPlacesDetails(new ReqPlaceDetails() {
+                var placeRes = placesClient.GetPlacesDetails(new ReqPlaceDetails()
+                {
                     placeid = summary.PlaceIDToSummarize,
                     language = lang
                 });
@@ -46,76 +47,95 @@ namespace PlacesIR.Summary
                 }
                 else
                 {
-                    foreach(var error in placeRes.Errors){
+                    foreach (var error in placeRes.Errors)
+                    {
                         response.Errors.Add(error.Key, error.Value);
                     }
                 }
             }
             if (summary.Place != null)
             {
-                // step 1 - search in google.
-                Result webpageResult = null;
-                List<Result> googleSearchResults = null;
-                using (GoogleSearchClient clWebPages = new GoogleSearchClient())
-                {
-                    ReqGoogleSearch req = new ReqGoogleSearch();
-                    req.q = summary.Place.name + ", " + mainPlaceNearByName;
-                    req.hl = lang;
-                    req.lr = "lang_" + lang;
-                    var googleSearchResultsResp = clWebPages.GetSearchResults(req);
-                    if (googleSearchResultsResp.Obj != null && googleSearchResultsResp.Obj.Items != null && googleSearchResultsResp.Obj.Items.Count > 0)
-                    {
-                        googleSearchResults = googleSearchResultsResp.Obj.Items.ToList();
-                        webpageResult = googleSearchResults[0];
-                    }
-                }
-
                 // step 2 - Create summary
                 summary.MainSummaryText = summary.Place.name;
                 summary.MainSummarySourceUrl = "";
-                if (webpageResult != null)
+
+                using (AylienClient summClient = new AylienClient())
                 {
-                    using (AylienClient summClient = new AylienClient())
+                    ReqSummarise summReq = new ReqSummarise();
+                    summReq.sentences_number = 4;
+                    summReq.language = "auto";
+
+                    // Try to retrieve summary from place website
+                    if (!string.IsNullOrEmpty(summary.Place.website))
                     {
-                        // short way
-                        ReqSummarise summReq = new ReqSummarise();
-                        summReq.url = webpageResult.Link;
-                        summReq.sentences_number = 4;
-                        summReq.language = "auto";
+                        summReq.url = summary.Place.website;
                         var summResp = summClient.Summarise(summReq);
                         if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                         {
                             summary.MainSummaryText = summResp.Obj.text;
-                            summary.MainSummarySourceUrl = webpageResult.Link;
+                            summary.MainSummarySourceUrl = summary.Place.website;
                         }
-                        if ((string.IsNullOrEmpty(summary.MainSummarySourceUrl) || summary.MainSummaryText.Length<50)
-                            && googleSearchResults != null && googleSearchResults.Count>1)
+                    }
+
+                    // Try to retrieve summary from google search results
+                    if (string.IsNullOrEmpty(summary.MainSummarySourceUrl) || summary.MainSummaryText.Length < 50)
+                    {
+                        // Google search
+                        Result webpageResult = null;
+                        List<Result> googleSearchResults = null;
+                        using (GoogleSearchClient clWebPages = new GoogleSearchClient())
                         {
-                            // try to summarize another result if first was failed or too short.
-                            webpageResult = googleSearchResults[0];
+                            ReqGoogleSearch req = new ReqGoogleSearch();
+                            req.q = summary.Place.name + ", " + mainPlaceNearByName;
+                            req.hl = lang;
+                            req.lr = "lang_" + lang;
+                            var googleSearchResultsResp = clWebPages.GetSearchResults(req);
+                            if (googleSearchResultsResp.Obj != null && googleSearchResultsResp.Obj.Items != null && googleSearchResultsResp.Obj.Items.Count > 0)
+                            {
+                                googleSearchResults = googleSearchResultsResp.Obj.Items.ToList();
+                                webpageResult = googleSearchResults[0];
+                            }
+                        }
+
+                        // Summary
+                        if (webpageResult != null)
+                        {
                             summReq.url = webpageResult.Link;
-                            summResp = summClient.Summarise(summReq);
-                            if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text) && summResp.Obj.text.Length > summary.MainSummaryText.Length)
+                            var summResp = summClient.Summarise(summReq);
+                            if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                             {
                                 summary.MainSummaryText = summResp.Obj.text;
                                 summary.MainSummarySourceUrl = webpageResult.Link;
                             }
-                        }
-                        // try to imrove summary
-                        if (!string.IsNullOrEmpty(summary.MainSummarySourceUrl))
-                        {
-                            ReqSummarise summFuncReq = new ReqSummarise();
-                            summFuncReq.text = summary.MainSummaryText;
-                            summFuncReq.sentences_number = 3;
-                            var summFuncResp = summClient.Summarise(summFuncReq);
-                            if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
+                            if ((string.IsNullOrEmpty(summary.MainSummarySourceUrl) || summary.MainSummaryText.Length < 50)
+                                && googleSearchResults != null && googleSearchResults.Count > 0)
                             {
-                                summary.MainSummaryText = summResp.Obj.text;
+                                // try to summarize another result if first was failed or too short.
+                                webpageResult = googleSearchResults[0];
+                                summReq.url = webpageResult.Link;
+                                summResp = summClient.Summarise(summReq);
+                                if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text) && summResp.Obj.text.Length > summary.MainSummaryText.Length)
+                                {
+                                    summary.MainSummaryText = summResp.Obj.text;
+                                    summary.MainSummarySourceUrl = webpageResult.Link;
+                                }
                             }
                         }
                     }
+                    // try to imrove summary
+                    if (!string.IsNullOrEmpty(summary.MainSummarySourceUrl))
+                    {
+                        ReqSummarise summFuncReq = new ReqSummarise();
+                        summFuncReq.text = summary.MainSummaryText;
+                        summFuncReq.sentences_number = 3;
+                        var summFuncResp = summClient.Summarise(summFuncReq);
+                        if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
+                        {
+                            summary.MainSummaryText = summFuncResp.Obj.text;
+                        }
+                    }
                 }
-                
+
                 // step 3 - Retrieve images
                 using (GoogleSearchClient clImages = new GoogleSearchClient())
                 {
