@@ -4,6 +4,13 @@
 a,a:hover, a:focus {
     color:#000;
 }
+h1{
+    float:left;
+}
+.slogen{
+    float:left;
+    margin:40px 0 0 10px;
+}
 .anim-effect {
     display: none;
 }

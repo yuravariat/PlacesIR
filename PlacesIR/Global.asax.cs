@@ -19,6 +19,8 @@ namespace PlacesIR
 
             // Site
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            LogHandler.WriteLog("Application start");
         }
     }
 }

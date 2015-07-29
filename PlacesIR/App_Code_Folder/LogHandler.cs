@@ -31,6 +31,8 @@ namespace PlacesIR
                     Directory.CreateDirectory(directory);
                 }
                 WriteLog("LogHandler init: on directory " + directory);
+                PlacesIR.Extentions.NlogInit.RegisterLayoutRenderer("fullurl", typeof(PlacesIR.Extentions.FullUrlLayoutRenderer));
+                WriteLog("fullurl registered");
                 logger = NLog.LogManager.GetCurrentClassLogger();
             }
             catch (Exception ex)
@@ -88,9 +90,7 @@ namespace PlacesIR
             try
             {
                 StreamWriter sw = File.AppendText(LOG_FILE_TEXT);
-                sw.WriteLine("================");
-                sw.WriteLine(DateTime.Now + " ==> " + message);
-                sw.WriteLine("================");
+                sw.WriteLine(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss.fff") + " ==> " + message);
                 sw.Close();
             }
             catch { }

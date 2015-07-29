@@ -1,0 +1,3 @@
+29/07/2015 02:40:04.714 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+29/07/2015 02:40:04.747 ==> fullurl registered
+29/07/2015 02:40:04.897 ==> Application start

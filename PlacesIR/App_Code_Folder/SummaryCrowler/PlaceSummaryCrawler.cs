@@ -55,16 +55,18 @@ namespace PlacesIR.Summary
             {
                 // step 1 - search in google.
                 Result webpageResult = null;
+                List<Result> googleSearchResults = null;
                 using (GoogleSearchClient clWebPages = new GoogleSearchClient())
                 {
                     ReqGoogleSearch req = new ReqGoogleSearch();
                     req.q = summary.Place.name + ", " + mainPlaceNearByName;
                     req.hl = lang;
                     req.lr = "lang_" + lang;
-                    var imgResp = clWebPages.GetSearchResults(req);
-                    if (imgResp.Obj != null && imgResp.Obj.Items != null && imgResp.Obj.Items.Count>0)
+                    var googleSearchResultsResp = clWebPages.GetSearchResults(req);
+                    if (googleSearchResultsResp.Obj != null && googleSearchResultsResp.Obj.Items != null && googleSearchResultsResp.Obj.Items.Count > 0)
                     {
-                        webpageResult = imgResp.Obj.Items[0];
+                        googleSearchResults = googleSearchResultsResp.Obj.Items.ToList();
+                        webpageResult = googleSearchResults[0];
                     }
                 }
 
@@ -86,22 +88,31 @@ namespace PlacesIR.Summary
                             summary.MainSummaryText = summResp.Obj.text;
                             summary.MainSummarySourceUrl = webpageResult.Link;
                         }
-
-                        // long way
-                        //ReqExtract extrTextReq = new ReqExtract();
-                        //extrTextReq.url = webpageResult.Link;
-                        //var resp = summClient.ExtractArticle(extrTextReq);
-                        //if (resp.Obj != null && !string.IsNullOrEmpty(resp.Obj.article))
-                        //{
-                        //    ReqSummarise summReq = new ReqSummarise();
-                        //    summReq.text = resp.Obj.article;
-                        //    summReq.sentences_number = 3;
-                        //    var summResp = summClient.Summarise(summReq);
-                        //    if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
-                        //    {
-                        //        summary.MainSummaryText = summResp.Obj.text;
-                        //    }
-                        //}
+                        if ((string.IsNullOrEmpty(summary.MainSummarySourceUrl) || summary.MainSummaryText.Length<50)
+                            && googleSearchResults != null && googleSearchResults.Count>1)
+                        {
+                            // try to summarize another result if first was failed or too short.
+                            webpageResult = googleSearchResults[0];
+                            summReq.url = webpageResult.Link;
+                            summResp = summClient.Summarise(summReq);
+                            if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text) && summResp.Obj.text.Length > summary.MainSummaryText.Length)
+                            {
+                                summary.MainSummaryText = summResp.Obj.text;
+                                summary.MainSummarySourceUrl = webpageResult.Link;
+                            }
+                        }
+                        // try to imrove summary
+                        if (!string.IsNullOrEmpty(summary.MainSummarySourceUrl))
+                        {
+                            ReqSummarise summFuncReq = new ReqSummarise();
+                            summFuncReq.text = summary.MainSummaryText;
+                            summFuncReq.sentences_number = 3;
+                            var summFuncResp = summClient.Summarise(summFuncReq);
+                            if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
+                            {
+                                summary.MainSummaryText = summResp.Obj.text;
+                            }
+                        }
                     }
                 }
                 

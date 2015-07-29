@@ -419,6 +419,8 @@ Search.PlaceSummaryDetails = function () {
         else {
             $("#place-details-videos a[rel^='prettyPhoto']").prettyPhoto();
         }
+
+        $('document,body').scrollTop($('#place-details-panel').offset().top);
     }
 }
 
