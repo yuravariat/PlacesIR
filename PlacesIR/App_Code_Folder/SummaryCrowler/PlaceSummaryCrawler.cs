@@ -63,7 +63,7 @@ namespace PlacesIR.Summary
                 using (AylienClient summClient = new AylienClient())
                 {
                     ReqSummarise summReq = new ReqSummarise();
-                    summReq.sentences_number = 3;
+                    summReq.sentences_number = 6;
                     summReq.language = "auto";
                     List<string> summarizedArticles = new List<string>();
                     
@@ -80,9 +80,9 @@ namespace PlacesIR.Summary
                     {
                         summReq.url = summary.Place.website;
                         var summResp = summClient.Summarise(summReq);
-                        if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
+                        if (summResp.Obj != null && summResp.Obj.sentences != null && summResp.Obj.sentences.Count > 0)
                         {
-                            summarizedArticles.Add(summResp.Obj.text);
+                            summarizedArticles.Add(string.Join(" ", summResp.Obj.sentences));
                             summary.MainSummarySources.Add(summary.Place.website);
                         }
                     }
@@ -116,9 +116,9 @@ namespace PlacesIR.Summary
                         {
                             summReq.url = googleSearchResults[i].Link;
                             var summResp = summClient.Summarise(summReq);
-                            if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
+                            if (summResp.Obj != null && summResp.Obj.sentences != null && summResp.Obj.sentences.Count > 0)
                             {
-                                summarizedArticles.Add(summResp.Obj.text);
+                                summarizedArticles.Add(string.Join(" ", summResp.Obj.sentences));
                                 summary.MainSummarySources.Add(googleSearchResults[i].Link);
                             }
                         }
@@ -129,12 +129,12 @@ namespace PlacesIR.Summary
                     {
                         ReqSummarise summFuncReq = new ReqSummarise();
                         summFuncReq.title = summary.Place.name;
-                        summFuncReq.text = string.Join("\n\r", summarizedArticles.OrderByDescending(s => s.Length)); // Combine all summarized articles.
-                        summFuncReq.sentences_number = 4;
+                        summFuncReq.text = string.Join("\n\r\\s", summarizedArticles.OrderByDescending(s => s.Length)); // Combine all summarized articles.
+                        summFuncReq.sentences_number = 5;
                         var summFuncResp = summClient.Summarise(summFuncReq);
-                        if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
+                        if (summFuncResp.Obj != null && summFuncResp.Obj.sentences != null && summFuncResp.Obj.sentences.Count > 0)
                         {
-                            summary.MainSummaryText = summFuncResp.Obj.text;
+                            summary.MainSummaryText = string.Join(" ", summFuncResp.Obj.sentences);
                         }
                         else
                         {

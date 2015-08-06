@@ -329,6 +329,8 @@ Search.PlaceSummaryDetails = function () {
             $('#place-details-rating').html('Not rated');
         }
         $('#place-details-overview').html(Search.CurrentPlaceSummary.MainSummaryText);
+
+        $('#place-details-source').html('');
         if (Search.CurrentPlaceSummary.MainSummarySources != null && Search.CurrentPlaceSummary.MainSummarySources.length > 0) {
             for (var i in Search.CurrentPlaceSummary.MainSummarySources) {
                 if (!isNaN(i)) {

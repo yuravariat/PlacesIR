@@ -25,3 +25,9 @@
 06/08/2015 05:41:19.855 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
 06/08/2015 05:41:19.891 ==> fullurl registered
 06/08/2015 05:41:19.998 ==> Application start
+06/08/2015 11:33:20.290 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 11:33:20.369 ==> fullurl registered
+06/08/2015 11:33:20.868 ==> Application start
+06/08/2015 11:39:59.684 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 11:39:59.715 ==> fullurl registered
+06/08/2015 11:39:59.823 ==> Application start
