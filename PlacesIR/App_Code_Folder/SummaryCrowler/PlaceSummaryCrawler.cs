@@ -129,7 +129,7 @@ namespace PlacesIR.Summary
                     {
                         ReqSummarise summFuncReq = new ReqSummarise();
                         summFuncReq.title = summary.Place.name;
-                        summFuncReq.text = string.Join("\n\r", summarizedArticles.OrderBy(s => s.Length)); // Combine all summarized articles.
+                        summFuncReq.text = string.Join("\n\r", summarizedArticles.OrderByDescending(s => s.Length)); // Combine all summarized articles.
                         summFuncReq.sentences_number = 4;
                         var summFuncResp = summClient.Summarise(summFuncReq);
                         if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
@@ -138,7 +138,7 @@ namespace PlacesIR.Summary
                         }
                         else
                         {
-                            // fallbackjust print combined text.
+                            // fallback just print combined text.
                             summary.MainSummaryText = summFuncReq.text;
                         }
                     }
