@@ -1,3 +1,27 @@
 29/07/2015 02:40:04.714 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
 29/07/2015 02:40:04.747 ==> fullurl registered
 29/07/2015 02:40:04.897 ==> Application start
+06/08/2015 05:04:51.870 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:04:52.027 ==> fullurl registered
+06/08/2015 05:04:52.620 ==> Application start
+06/08/2015 05:11:31.118 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:11:31.141 ==> fullurl registered
+06/08/2015 05:11:31.239 ==> Application start
+06/08/2015 05:18:30.651 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:18:30.678 ==> fullurl registered
+06/08/2015 05:18:30.788 ==> Application start
+06/08/2015 05:18:40.350 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:18:40.447 ==> fullurl registered
+06/08/2015 05:18:40.618 ==> Application start
+06/08/2015 05:34:25.102 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:34:25.143 ==> fullurl registered
+06/08/2015 05:34:25.262 ==> Application start
+06/08/2015 05:37:48.848 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:37:48.888 ==> fullurl registered
+06/08/2015 05:37:49.001 ==> Application start
+06/08/2015 05:40:06.387 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:40:06.410 ==> fullurl registered
+06/08/2015 05:40:06.502 ==> Application start
+06/08/2015 05:41:19.855 ==> LogHandler init: on directory D:\VSProjects\PlacesIRProject\PlacesIR\App_Data\Logs\
+06/08/2015 05:41:19.891 ==> fullurl registered
+06/08/2015 05:41:19.998 ==> Application start

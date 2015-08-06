@@ -107,15 +107,19 @@ namespace PlacesIR.Summary
                     // Summaries from search results
                     if (googleSearchResults != null && googleSearchResults.Count > 0)
                     {
-                        for (int i = 0; i < 5 || summarizedArticles.Count >= SourcesToSummarizeNumber; i++)
+                        int maxResultsToSearchIn = 4;
+                        for (int i = 0; i < googleSearchResults.Count 
+                            && i < maxResultsToSearchIn 
+                            && summarizedArticles.Count < SourcesToSummarizeNumber
+                            && !summary.MainSummarySources.Contains(googleSearchResults[i].Link)
+                            ; i++)
                         {
-                            var webpageResult = googleSearchResults[i];
-                            summReq.url = webpageResult.Link;
+                            summReq.url = googleSearchResults[i].Link;
                             var summResp = summClient.Summarise(summReq);
                             if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                             {
                                 summarizedArticles.Add(summResp.Obj.text);
-                                summary.MainSummarySources.Add(summary.Place.website);
+                                summary.MainSummarySources.Add(googleSearchResults[i].Link);
                             }
                         }
                     }
@@ -124,12 +128,18 @@ namespace PlacesIR.Summary
                     if (summarizedArticles.Count > 0)
                     {
                         ReqSummarise summFuncReq = new ReqSummarise();
-                        summFuncReq.text = string.Join("\n\r", summarizedArticles); // Combine all summarized articles.
-                        summFuncReq.sentences_number = 5;
+                        summFuncReq.title = summary.Place.name;
+                        summFuncReq.text = string.Join("\n\r", summarizedArticles.OrderBy(s => s.Length)); // Combine all summarized articles.
+                        summFuncReq.sentences_number = 4;
                         var summFuncResp = summClient.Summarise(summFuncReq);
                         if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
                         {
                             summary.MainSummaryText = summFuncResp.Obj.text;
+                        }
+                        else
+                        {
+                            // fallbackjust print combined text.
+                            summary.MainSummaryText = summFuncReq.text;
                         }
                     }
 

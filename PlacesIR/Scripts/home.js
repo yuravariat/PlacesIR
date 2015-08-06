@@ -332,7 +332,7 @@ Search.PlaceSummaryDetails = function () {
         if (Search.CurrentPlaceSummary.MainSummarySources != null && Search.CurrentPlaceSummary.MainSummarySources.length > 0) {
             for (var i in Search.CurrentPlaceSummary.MainSummarySources) {
                 if (!isNaN(i)) {
-                    $('#place-details-source').html((i == 0 ? '' : ' | ') + '<a target="_blank" href="' + Search.CurrentPlaceSummary.MainSummarySources[i] + '">');
+                    $('#place-details-source').append((i == 0 ? '' : ' <br/> ') + '<a target="_blank" href="' + Search.CurrentPlaceSummary.MainSummarySources[i] + '">' + Search.CurrentPlaceSummary.MainSummarySources[i] + '</a>');
                 }
             }
         }
