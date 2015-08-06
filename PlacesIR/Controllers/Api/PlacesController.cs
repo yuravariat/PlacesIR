@@ -30,9 +30,9 @@ namespace PlacesIR.Controllers.Api
                 nearPlacesResp.Errors.Add("place name", "place name can not be empty");
                 return Json(nearPlacesResp);
             }
-            if (req.Distance < 100 || req.Distance > 5000)
+            if (req.Distance < 0 || req.Distance > 10000)
             {
-                nearPlacesResp.Errors.Add("distance limit", "distanse can be only between 100 and 5000");
+                nearPlacesResp.Errors.Add("distance limit", "distanse can be only between 0.1 and 10 km");
                 return Json(nearPlacesResp);
             }
 

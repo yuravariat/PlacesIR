@@ -329,7 +329,16 @@ Search.PlaceSummaryDetails = function () {
             $('#place-details-rating').html('Not rated');
         }
         $('#place-details-overview').html(Search.CurrentPlaceSummary.MainSummaryText);
-        $('#place-details-source').html(Search.CurrentPlaceSummary.MainSummarySourceUrl != '' ? '<a target="_blank" href="' + Search.CurrentPlaceSummary.MainSummarySourceUrl + '">' + Search.CurrentPlaceSummary.MainSummarySourceUrl + '</a>' : 'none');
+        if (Search.CurrentPlaceSummary.MainSummarySources != null && Search.CurrentPlaceSummary.MainSummarySources.length > 0) {
+            for (var i in Search.CurrentPlaceSummary.MainSummarySources) {
+                if (!isNaN(i)) {
+                    $('#place-details-source').html((i == 0 ? '' : ' | ') + '<a target="_blank" href="' + Search.CurrentPlaceSummary.MainSummarySources[i] + '">');
+                }
+            }
+        }
+        else {
+            $('#place-details-source').html('none');
+        }
         $('#place-details-address').html(Search.CurrentPlaceSummary.Place.formatted_address);
         $('#place-details-vicinity').html(Search.CurrentPlaceSummary.Place.vicinity);
         $('#place-details-phone').html(Search.CurrentPlaceSummary.Place.international_phone_number);

@@ -57,13 +57,23 @@ namespace PlacesIR.Summary
             {
                 // step 2 - Create summary
                 summary.MainSummaryText = summary.Place.name;
-                summary.MainSummarySourceUrl = "";
+                summary.MainSummarySources = new List<string>();
+
 
                 using (AylienClient summClient = new AylienClient())
                 {
                     ReqSummarise summReq = new ReqSummarise();
-                    summReq.sentences_number = 4;
+                    summReq.sentences_number = 3;
                     summReq.language = "auto";
+                    List<string> summarizedArticles = new List<string>();
+                    
+                    string SourcesToSummarizeNumberStr = System.Configuration.ConfigurationManager.AppSettings["SourcesToSummarizeNumber"];
+                    short SourcesToSummarizeNumber;
+                    Int16.TryParse(SourcesToSummarizeNumberStr, out SourcesToSummarizeNumber);
+                    if (SourcesToSummarizeNumber == 0)
+                    {
+                        SourcesToSummarizeNumber = 3;
+                    }
 
                     // Try to retrieve summary from place website
                     if (!string.IsNullOrEmpty(summary.Place.website))
@@ -72,68 +82,57 @@ namespace PlacesIR.Summary
                         var summResp = summClient.Summarise(summReq);
                         if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                         {
-                            summary.MainSummaryText = summResp.Obj.text;
-                            summary.MainSummarySourceUrl = summary.Place.website;
+                            summarizedArticles.Add(summResp.Obj.text);
+                            summary.MainSummarySources.Add(summary.Place.website);
                         }
                     }
 
                     // Try to retrieve summary from google search results
-                    if (string.IsNullOrEmpty(summary.MainSummarySourceUrl) || summary.MainSummaryText.Length < 50)
-                    {
-                        // Google search
-                        Result webpageResult = null;
-                        List<Result> googleSearchResults = null;
-                        using (GoogleSearchClient clWebPages = new GoogleSearchClient())
-                        {
-                            ReqGoogleSearch req = new ReqGoogleSearch();
-                            req.q = summary.Place.name + ", " + mainPlaceNearByName;
-                            req.hl = lang;
-                            req.lr = "lang_" + lang;
-                            var googleSearchResultsResp = clWebPages.GetSearchResults(req);
-                            if (googleSearchResultsResp.Obj != null && googleSearchResultsResp.Obj.Items != null && googleSearchResultsResp.Obj.Items.Count > 0)
-                            {
-                                googleSearchResults = googleSearchResultsResp.Obj.Items.ToList();
-                                webpageResult = googleSearchResults[0];
-                            }
-                        }
 
-                        // Summary
-                        if (webpageResult != null)
+                    // Google search
+                    List<Result> googleSearchResults = null;
+                    using (GoogleSearchClient clWebPages = new GoogleSearchClient())
+                    {
+                        ReqGoogleSearch req = new ReqGoogleSearch();
+                        req.q = summary.Place.name + ", " + mainPlaceNearByName;
+                        req.hl = lang;
+                        req.lr = "lang_" + lang;
+                        var googleSearchResultsResp = clWebPages.GetSearchResults(req);
+                        if (googleSearchResultsResp.Obj != null && googleSearchResultsResp.Obj.Items != null && googleSearchResultsResp.Obj.Items.Count > 0)
                         {
+                            googleSearchResults = googleSearchResultsResp.Obj.Items.ToList();
+                        }
+                    }
+
+                    // Summaries from search results
+                    if (googleSearchResults != null && googleSearchResults.Count > 0)
+                    {
+                        for (int i = 0; i < 5 || summarizedArticles.Count >= SourcesToSummarizeNumber; i++)
+                        {
+                            var webpageResult = googleSearchResults[i];
                             summReq.url = webpageResult.Link;
                             var summResp = summClient.Summarise(summReq);
                             if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text))
                             {
-                                summary.MainSummaryText = summResp.Obj.text;
-                                summary.MainSummarySourceUrl = webpageResult.Link;
-                            }
-                            if ((string.IsNullOrEmpty(summary.MainSummarySourceUrl) || summary.MainSummaryText.Length < 50)
-                                && googleSearchResults != null && googleSearchResults.Count > 0)
-                            {
-                                // try to summarize another result if first was failed or too short.
-                                webpageResult = googleSearchResults[0];
-                                summReq.url = webpageResult.Link;
-                                summResp = summClient.Summarise(summReq);
-                                if (summResp.Obj != null && !string.IsNullOrEmpty(summResp.Obj.text) && summResp.Obj.text.Length > summary.MainSummaryText.Length)
-                                {
-                                    summary.MainSummaryText = summResp.Obj.text;
-                                    summary.MainSummarySourceUrl = webpageResult.Link;
-                                }
+                                summarizedArticles.Add(summResp.Obj.text);
+                                summary.MainSummarySources.Add(summary.Place.website);
                             }
                         }
                     }
-                    // try to imrove summary
-                    if (!string.IsNullOrEmpty(summary.MainSummarySourceUrl))
+
+                    // Summarise all summaries to one big summary.
+                    if (summarizedArticles.Count > 0)
                     {
                         ReqSummarise summFuncReq = new ReqSummarise();
-                        summFuncReq.text = summary.MainSummaryText;
-                        summFuncReq.sentences_number = 3;
+                        summFuncReq.text = string.Join("\n\r", summarizedArticles); // Combine all summarized articles.
+                        summFuncReq.sentences_number = 5;
                         var summFuncResp = summClient.Summarise(summFuncReq);
                         if (summFuncResp.Obj != null && !string.IsNullOrEmpty(summFuncResp.Obj.text))
                         {
                             summary.MainSummaryText = summFuncResp.Obj.text;
                         }
                     }
+
                 }
 
                 // step 3 - Retrieve images
